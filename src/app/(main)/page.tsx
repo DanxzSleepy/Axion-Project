@@ -258,15 +258,25 @@ export default function Home() {
             whileInView="animate"
             viewport={{ once: true }}
           >
-            {['Push-up', 'Pull-up', 'Handstand', 'Muscle-up', 'Planche', 'Front Lever', 'L-Sit', 'Pistol Squat'].map((skill, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                className="p-6 bg-card border border-border rounded-xl text-center hover:border-primary/50 hover:scale-105 transition-all duration-300"
-              >
-                <div className="text-2xl font-bold text-primary mb-2">{skill}</div>
-                <div className="text-sm text-foreground/60">Click to learn more</div>
-              </motion.div>
+            {[
+              { name: 'Push-up', link: '/tutorials', difficulty: 'F-D' },
+              { name: 'Pull-up', link: '/tutorials', difficulty: 'D-C' },
+              { name: 'Handstand', link: '/training/handstand-guide', difficulty: 'C-B' },
+              { name: 'Muscle-up', link: '/tutorials', difficulty: 'B-A' },
+              { name: 'Planche', link: '/training/planche-guide', difficulty: 'A-SS' },
+              { name: 'Front Lever', link: '/training/front-lever-guide', difficulty: 'B-SS' },
+              { name: 'L-Sit', link: '/tutorials', difficulty: 'C-B' },
+              { name: 'Pistol Squat', link: '/tutorials', difficulty: 'B-A' }
+            ].map((skill, index) => (
+              <Link href={skill.link} key={index}>
+                <motion.div
+                  variants={fadeInUp}
+                  className="p-6 bg-card border border-border rounded-xl text-center hover:border-primary/50 hover:scale-105 transition-all duration-300 cursor-pointer group"
+                >
+                  <div className="text-2xl font-bold text-primary mb-2 group-hover:text-primary-hover">{skill.name}</div>
+                  <div className="text-sm text-foreground/60">Difficulty: {skill.difficulty}</div>
+                </motion.div>
+              </Link>
             ))}
           </motion.div>
         </div>

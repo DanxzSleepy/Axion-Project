@@ -10,187 +10,26 @@ export interface TrainingGuide {
 }
 
 export const trainingGuides: TrainingGuide[] = [
+  // Static guide (has its own page file)
   {
-    slug: 'progressive-overload-in-calisthenics',
-    title: 'Progressive Overload in Calisthenics',
+    slug: 'calisthenics-fundamentals',
+    title: 'Calisthenics Fundamentals',
     category: 'Fundamentals',
-    readTime: '8 min read',
+    readTime: '10 min read',
     sections: [
-      {
-        title: 'What is Progressive Overload?',
-        content: `Progressive overload is the gradual increase of stress placed on your body during training. It's the fundamental principle behind all strength gains.
-
-In calisthenics, instead of adding weight to a bar, you progress to harder exercise variations, increase reps, or improve leverage.`
-      },
-      {
-        title: 'Methods of Progressive Overload',
-        content: `**1. Exercise Progression:** Move to harder variations (e.g., push-ups → diamond push-ups → archer push-ups)
-
-**2. Increased Reps:** Add more repetitions within your target range
-
-**3. Increased Sets:** Add more total volume to your workout
-
-**4. Better Form:** Improve range of motion and control
-
-**5. Reduced Rest Time:** Decrease rest between sets to increase intensity
-
-**6. Tempo Changes:** Slow down the eccentric (lowering) phase for more time under tension`
-      },
-      {
-        title: 'Practical Example: Push-up Progression',
-        content: `Week 1-2: Wall push-ups (3x15)
-Week 3-4: Incline push-ups (3x12)
-Week 5-6: Standard push-ups (3x10)
-Week 7-8: Diamond push-ups (3x8)
-Week 9-10: Archer push-ups (3x6 each side)
-Week 11-12: One-arm push-up progressions
-
-Each step increases difficulty by changing leverage and weight distribution.`
-      },
-      {
-        title: 'Common Mistakes',
-        content: `** progressing too fast** - Master each level before moving on
-**Skipping fundamentals** - Build a solid foundation first
-**Not tracking progress** - Log your workouts to see improvement
-**Ignoring recovery** - Muscles grow during rest, not training
-**Inconsistent training** - Regularity beats intensity`
-      }
+      { title: 'What is Calisthenics?', content: `Calisthenics is a form of strength training that utilizes only your bodyweight as resistance. The word comes from ancient Greek: "kalos" (beauty) and "sthenos" (strength).\n\nUnlike weightlifting that relies on external equipment, calisthenics teaches you to master your own body through progressive movements and skills.` },
+      { title: 'Core Principles', content: `**Progressive Overload:** Gradually increase difficulty by advancing to harder exercise variations.\n\n**Consistency:** Regular training (3-5 times per week) produces better results than sporadic intense sessions.\n\n**Proper Form:** Quality over quantity. Perfect your technique before increasing reps or difficulty.\n\n**Patience:** Skills take time. Most people achieve significant progress in 6-12 months with consistent training.` },
+      { title: 'Essential Movement Patterns', content: `**Pushing:** Push-ups, dips, handstand push-ups (chest, shoulders, triceps)\n\n**Pulling:** Pull-ups, rows, muscle-ups (back, biceps, rear delts)\n\n**Squatting:** Squats, pistol squats, shrimp squats (quadriceps, glutes, hamstrings)\n\n**Core Work:** Planks, L-sits, leg raises (abs, obliques, hip flexors)\n\n**Static Holds:** Planche, front lever, handstand (full body strength)` },
+      { title: 'Getting Started', content: `1. **Assess your current level** - Can you do 10 push-ups? 5 pull-ups?\n2. **Start with basics** - Master the fundamentals before attempting advanced skills\n3. **Train 3-4 times per week** - Allow rest days for recovery\n4. **Track your progress** - Log workouts to see improvement\n5. **Be consistent** - Results come from regular practice, not perfection` }
     ],
     keyTakeaways: [
-      "Progressive overload is essential for continuous strength gains",
-      "Use multiple methods: progressions, reps, sets, tempo, rest time",
-      "Progress gradually - master each level before advancing",
-      "Track your workouts to ensure you're actually progressing"
+      "Calisthenics uses bodyweight only - no gym required",
+      "Focus on progressive overload and proper form",
+      "Train consistently 3-5 times per week",
+      "Master basics before advancing to complex skills"
     ],
-    nextGuide: '/training/gymnastics-vs-calisthenics',
-    previousGuide: '/training/calisthenics-fundamentals'
-  },
-  {
-    slug: 'gymnastics-vs-calisthenics',
-    title: 'Gymnastics vs. Calisthenics',
-    category: 'Fundamentals',
-    readTime: '6 min read',
-    sections: [
-      {
-        title: 'Understanding the Difference',
-        content: `While both use bodyweight training, gymnastics and calisthenics have distinct approaches and goals.
-
-**Gymnastics** is a competitive sport with standardized routines, judged on execution, difficulty, and artistry. It emphasizes dynamic movements, flexibility, and acrobatics.
-
-**Calisthenics** (street workout) focuses on strength development, skill mastery, and physical aesthetics. It's more accessible and less structured than gymnastics.`
-      },
-      {
-        title: 'Key Differences',
-        content: `**Training Environment:**
-- Gymnastics: Professional gyms with specialized equipment
-- Calisthenics: Parks, home, or anywhere with minimal equipment
-
-**Goals:**
-- Gymnastics: Competition scores and routine perfection
-- Calisthenics: Strength gains, skill achievement, physique
-
-**Skill Focus:**
-- Gymnastics: Dynamic skills, flips, routines
-- Calisthenics: Static holds, strength skills, freestyle movements
-
-**Age of Entry:**
-- Gymnastics: Usually starts in childhood
-- Calisthenics: Can start at any age`
-      },
-      {
-        title: 'Which Should You Choose?',
-        content: `**Choose Gymnastics if:**
-- You want to compete
-- You're young or coaching youth
-- You enjoy structured routines and acrobatics
-- You have access to a gymnastics facility
-
-**Choose Calisthenics if:**
-- You want to train independently
-- You're starting as an adult
-- You prefer strength skills and static holds
-- You want minimal equipment and flexible training locations
-
-Many athletes combine both for well-rounded development!`
-      }
-    ],
-    keyTakeaways: [
-      "Gymnastics is a competitive sport; calisthenics is fitness-focused",
-      "Calisthenics is more accessible for adults starting out",
-      "Both build incredible bodyweight strength",
-      "You can benefit from elements of both disciplines"
-    ],
-    nextGuide: '/training/full-body-workout-vs-split',
-    previousGuide: '/training/progressive-overload-in-calisthenics'
-  },
-  {
-    slug: 'full-body-workout-vs-split',
-    title: 'Full Body Workout vs. Split',
-    category: 'Fundamentals',
-    readTime: '7 min read',
-    sections: [
-      {
-        title: 'Understanding Training Splits',
-        content: `A training split determines how you organize your workouts throughout the week. The two main approaches are full body workouts and split routines.
-
-**Full Body:** Train all major muscle groups every session
-**Split:** Focus on specific muscle groups or movement patterns each day`  
-      },
-      {
-        title: 'Full Body Workouts',
-        content: `**Best for:** Beginners, intermediate athletes, 3-4 training days per week
-
-**Advantages:**
-- Higher frequency per movement pattern
-- Better for skill development
-- More flexible scheduling
-- Great for overall strength
-
-**Example Full Body Workout:**
-- Warm-up: 5-10 min dynamic stretching
-- Pull-ups: 3x8-12
-- Dips: 3x10-15
-- Squats: 3x15-20
-- L-sit progressions: 3x max hold
-- Push-ups: 3x15-20`  
-      },
-      {
-        title: 'Split Routines',
-        content: `**Best for:** Advanced athletes, 5-6 training days per week, specialization
-
-**Common Splits:**
-- Push/Pull/Legs (3 or 6 days)
-- Upper/Lower (4 days)
-- Push/Pull (4 days)
-
-**Push/Pull/Legs Example:**
-- Push: Push-ups, dips, handstand work
-- Pull: Pull-ups, rows, front lever work
-- Legs: Squats, pistol squats, calf raises`  
-      },
-      {
-        title: 'Which Should You Choose?',
-        content: `**Choose Full Body if:**
-- You're a beginner or intermediate
-- You train 3-4 days per week
-- You want to build overall strength
-- You're learning new skills
-
-**Choose Split if:**
-- You're advanced
-- You train 5-6 days per week
-- You want to maximize volume
-- You're targeting specific weaknesses`
-      }
-    ],
-    keyTakeaways: [
-      "Full body is best for most people starting out",
-      "Splits work well for advanced athletes training 5+ days",
-      "Frequency matters more than perfection",
-      "Choose what fits your schedule and goals"
-    ],
-    nextGuide: '/training/rest-and-recovery',
-    previousGuide: '/training/gymnastics-vs-calisthenics'
+    nextGuide: '/training/progressive-overload',
+    previousGuide: undefined
   },
   {
     slug: 'progressive-overload',

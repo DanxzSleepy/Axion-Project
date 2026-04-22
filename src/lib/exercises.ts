@@ -179,6 +179,198 @@ export const exercises: Exercise[] = [
       progression: 'V-Sit',
       target: 'Manna'
     }
+  },
+
+  // Additional Horizontal Push
+  {
+    id: 'diamond-pushup',
+    name: 'Diamond Push-up',
+    category: 'horizontal-push',
+    difficulty: 'C',
+    learningTime: '1-2 months',
+    description: 'A push-up variation with hands close together, emphasizing triceps strength.',
+    musclesWorked: ['Triceps', 'Chest', 'Shoulders'],
+    highTensionAreas: ['Triceps', 'Inner Chest'],
+    steps: ['Place hands close together forming a diamond shape', 'Lower your chest to your hands', 'Push back up maintaining tight core', 'Keep elbows close to your body'],
+    mainExercises: ['Diamond Push-up'],
+    accessoryExercises: ['Close-grip Push-up'],
+    progression: { regression: 'Standard Push-up', current: 'Diamond Push-up', progression: 'Archer Push-up', target: 'One-Arm Push-up' }
+  },
+  {
+    id: 'archer-pushup',
+    name: 'Archer Push-up',
+    category: 'horizontal-push',
+    difficulty: 'B',
+    learningTime: '3-6 months',
+    description: 'An advanced push-up that shifts weight to one arm, building toward one-arm push-ups.',
+    musclesWorked: ['Chest', 'Shoulders', 'Triceps', 'Core'],
+    highTensionAreas: ['Pectorals', 'Anterior Deltoids'],
+    steps: ['Start in wide push-up position', 'Lower to one side while keeping other arm straight', 'Push back up', 'Alternate sides'],
+    mainExercises: ['Archer Push-up'],
+    accessoryExercises: ['Typewriter Push-up'],
+    progression: { regression: 'Diamond Push-up', current: 'Archer Push-up', progression: 'One-Arm Push-up Progression', target: 'One-Arm Push-up' }
+  },
+  {
+    id: 'planche-lean',
+    name: 'Planche Lean',
+    category: 'horizontal-push',
+    difficulty: 'B',
+    learningTime: '3-6 months',
+    description: 'A foundational planche exercise that builds straight-arm strength.',
+    musclesWorked: ['Shoulders', 'Chest', 'Biceps', 'Core'],
+    highTensionAreas: ['Anterior Deltoids', 'Biceps Tendons'],
+    steps: ['Start in push-up position', 'Lean forward past your wrists', 'Keep arms straight and body tight', 'Hold the position'],
+    mainExercises: ['Planche Lean'],
+    accessoryExercises: ['Lean Holds', 'Pseudo Planche Push-ups'],
+    progression: { regression: 'Push-up', current: 'Planche Lean', progression: 'Tuck Planche', target: 'Full Planche' }
+  },
+
+  // Additional Vertical Push
+  {
+    id: 'handstand-pushup',
+    name: 'Handstand Push-up',
+    category: 'vertical-push',
+    difficulty: 'B',
+    learningTime: '6-12 months',
+    description: 'An advanced vertical pushing exercise performed in a handstand position.',
+    musclesWorked: ['Shoulders', 'Triceps', 'Upper Chest', 'Core'],
+    highTensionAreas: ['Anterior Deltoids', 'Triceps'],
+    steps: ['Kick up to handstand against wall', 'Lower your head to the ground', 'Press back up to full handstand', 'Keep body tight throughout'],
+    mainExercises: ['Wall Handstand Push-up'],
+    accessoryExercises: ['Pike Push-up', 'Elevated Pike Push-up'],
+    progression: { regression: 'Pike Push-up', current: 'Handstand Push-up', progression: 'Freestanding HSPU', target: '90° Push-up' }
+  },
+
+  // Additional Vertical Pull
+  {
+    id: 'chinup',
+    name: 'Chin-up',
+    category: 'vertical-pull',
+    difficulty: 'D',
+    learningTime: '1-3 months',
+    description: 'A vertical pulling exercise with an underhand grip, emphasizing biceps.',
+    musclesWorked: ['Back', 'Biceps', 'Rear Deltoids'],
+    highTensionAreas: ['Latissimus Dorsi', 'Biceps'],
+    steps: ['Hang from bar with underhand grip', 'Pull your chin over the bar', 'Lower with control', 'Keep core engaged'],
+    mainExercises: ['Chin-up'],
+    accessoryExercises: ['Commando Pull-up'],
+    progression: { regression: 'Band-assisted Chin-up', current: 'Chin-up', progression: 'Muscle-up', target: 'One-Arm Chin-up' }
+  },
+  {
+    id: 'muscleup',
+    name: 'Muscle-up',
+    category: 'vertical-pull',
+    difficulty: 'B',
+    learningTime: '6-12 months',
+    description: 'An explosive movement combining a pull-up with a dip transition over the bar.',
+    musclesWorked: ['Back', 'Chest', 'Triceps', 'Biceps', 'Core'],
+    highTensionAreas: ['Latissimus Dorsi', 'Pectorals'],
+    steps: ['Explosive pull-up to chest height', 'Transition over the bar', 'Press out to dip position', 'Lower with control'],
+    mainExercises: ['Bar Muscle-up', 'Ring Muscle-up'],
+    accessoryExercises: ['Explosive Pull-ups', 'False Grip Hangs'],
+    progression: { regression: 'Jumping Muscle-up', current: 'Muscle-up', progression: '360 Muscle-up', target: 'One-Arm Muscle-up' }
+  },
+  {
+    id: 'one-arm-pullup',
+    name: 'One-Arm Pull-up',
+    category: 'vertical-pull',
+    difficulty: 'A',
+    learningTime: '1-2 years',
+    description: 'An elite pulling exercise performed with only one arm.',
+    musclesWorked: ['Back', 'Biceps', 'Forearms', 'Core'],
+    highTensionAreas: ['Latissimus Dorsi', 'Biceps'],
+    steps: ['Hang from bar with one hand', 'Pull your chin over the bar', 'Lower with control', 'Keep body tight to prevent rotation'],
+    mainExercises: ['One-Arm Pull-up'],
+    accessoryExercises: ['Archer Pull-ups', 'Typewriter Pull-ups'],
+    progression: { regression: 'Archer Pull-up', current: 'One-Arm Pull-up', progression: 'One-Arm Muscle-up', target: 'One-Arm One-Leg Pull-up' }
+  },
+
+  // Additional Legs
+  {
+    id: 'pistol-squat',
+    name: 'Pistol Squat',
+    category: 'legs',
+    difficulty: 'B',
+    learningTime: '3-9 months',
+    description: 'A single-leg squat that requires strength, balance, and mobility.',
+    musclesWorked: ['Quadriceps', 'Glutes', 'Hamstrings', 'Core'],
+    highTensionAreas: ['Quadriceps', 'Hip Flexors'],
+    steps: ['Stand on one leg with other leg extended', 'Squat down on one leg', 'Keep extended leg off the ground', 'Stand back up'],
+    mainExercises: ['Assisted Pistol Squat', 'Full Pistol Squat'],
+    accessoryExercises: ['Bulgarian Split Squat', 'Shrimp Squat'],
+    progression: { regression: 'Assisted Pistol Squat', current: 'Pistol Squat', progression: 'Weighted Pistol Squat', target: 'Pistol Squat Jump' }
+  },
+  {
+    id: 'shrimp-squat',
+    name: 'Shrimp Squat',
+    category: 'legs',
+    difficulty: 'B',
+    learningTime: '3-9 months',
+    description: 'A single-leg squat variation that emphasizes knee flexion.',
+    musclesWorked: ['Quadriceps', 'Glutes', 'Hamstrings'],
+    highTensionAreas: ['Quadriceps', 'Glutes'],
+    steps: ['Stand on one leg, hold other foot behind you', 'Squat down until knee nearly touches ground', 'Push back up', 'Keep balance throughout'],
+    mainExercises: ['Shrimp Squat'],
+    accessoryExercises: ['Assisted Shrimp Squat'],
+    progression: { regression: 'Assisted Shrimp Squat', current: 'Shrimp Squat', progression: 'Weighted Shrimp Squat', target: 'Shrimp Squat Jump' }
+  },
+  {
+    id: 'nordic-curl',
+    name: 'Nordic Curl',
+    category: 'legs',
+    difficulty: 'A',
+    learningTime: '6-12 months',
+    description: 'An advanced hamstring exercise that involves controlled lowering from kneeling position.',
+    musclesWorked: ['Hamstrings', 'Glutes', 'Calves'],
+    highTensionAreas: ['Hamstrings'],
+    steps: ['Kneel with ankles secured', 'Slowly lower your torso forward', 'Control the descent as long as possible', 'Use hands to push back up'],
+    mainExercises: ['Nordic Curl Negatives', 'Full Nordic Curl'],
+    accessoryExercises: ['Glute-ham Raises', 'Single-leg Romanian Deadlift'],
+    progression: { regression: 'Nordic Curl Negatives', current: 'Nordic Curl', progression: 'Weighted Nordic Curl', target: 'Nordic Curl to Stand' }
+  },
+
+  // Additional Core/Misc
+  {
+    id: 'dragon-flag',
+    name: 'Dragon Flag',
+    category: 'core-misc',
+    difficulty: 'A',
+    learningTime: '6-12 months',
+    description: 'An advanced core exercise made famous by Bruce Lee.',
+    musclesWorked: ['Core', 'Lats', 'Hip Flexors', 'Lower Back'],
+    highTensionAreas: ['Rectus Abdominis', 'Obliques'],
+    steps: ['Lie on bench and grip behind your head', 'Raise your entire body up', 'Lower slowly keeping body straight', 'Only shoulders touch the bench'],
+    mainExercises: ['Dragon Flag Negatives', 'Dragon Flag'],
+    accessoryExercises: ['L-sit', 'Hanging Leg Raises'],
+    progression: { regression: 'Tuck Dragon Flag', current: 'Dragon Flag', progression: 'One-Arm Dragon Flag', target: 'Dragon Flag to Handstand' }
+  },
+  {
+    id: 'front-lever',
+    name: 'Front Lever',
+    category: 'core-misc',
+    difficulty: 'A',
+    learningTime: '1-2 years',
+    description: 'An advanced static hold where you hold your body horizontal while hanging from a bar.',
+    musclesWorked: ['Back', 'Core', 'Biceps', 'Rear Deltoids'],
+    highTensionAreas: ['Latissimus Dorsi', 'Core'],
+    steps: ['Hang from bar with overhand grip', 'Pull your body horizontal', 'Keep body straight and tight', 'Hold the position'],
+    mainExercises: ['Tuck Front Lever', 'Advanced Tuck FL', 'Full Front Lever'],
+    accessoryExercises: ['Front Lever Raises', 'Tuck FL Pull-ups'],
+    progression: { regression: 'Tuck Front Lever', current: 'Front Lever', progression: 'Front Lever Pull-up', target: 'One-Arm Front Lever' }
+  },
+  {
+    id: 'planche',
+    name: 'Planche',
+    category: 'core-misc',
+    difficulty: 'S',
+    learningTime: '1-3 years',
+    description: 'An elite static hold where you hold your body parallel to the ground supported only by your hands.',
+    musclesWorked: ['Shoulders', 'Chest', 'Biceps', 'Core'],
+    highTensionAreas: ['Anterior Deltoids', 'Biceps Tendons'],
+    steps: ['Start in tuck planche position', 'Slowly extend legs', 'Keep arms straight and body tight', 'Hold horizontal position'],
+    mainExercises: ['Tuck Planche', 'Advanced Tuck PL', 'Straddle PL', 'Full Planche'],
+    accessoryExercises: ['Planche Lean', 'Pseudo Planche Push-ups'],
+    progression: { regression: 'Planche Lean', current: 'Planche', progression: 'Planche Push-up', target: 'One-Arm Planche' }
   }
 ];
 

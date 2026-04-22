@@ -8,8 +8,9 @@ export function generateStaticParams() {
   }));
 }
 
-export default function TrainingGuidePage({ params }: { params: { slug: string } }) {
-  const guide = trainingGuides.find((g) => g.slug === params.slug);
+export default async function TrainingGuidePage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const guide = trainingGuides.find((g) => g.slug === resolvedParams.slug);
 
   if (!guide) {
     notFound();

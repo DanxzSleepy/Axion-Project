@@ -32,6 +32,24 @@ export default function TrainingGuideLayout({
   previousGuide,
   previousGuideTitle
 }: TrainingGuideLayoutProps) {
+  // Simple markdown renderer for bold text
+  const renderMarkdown = (content: string) => {
+    const lines = content.split('\n');
+    return lines.map((line, i) => {
+      if (!line.trim()) return <div key={i} className="h-4" />;
+      
+      // Parse bold syntax **text**
+      const parts = line.split(/(\*\*[^*]+\*\*)/g);
+      const renderedLine = parts.map((part, j) => {
+        if (part.startsWith('**') && part.endsWith('**')) {
+          return <strong key={j} className="font-bold text-foreground">{part.slice(2, -2)}</strong>;
+        }
+        return part;
+      });
+      
+      return <p key={i} className="text-foreground/80 leading-relaxed mb-3">{renderedLine}</p>;
+    });
+  };
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
       {/* Back Button */}
@@ -73,9 +91,7 @@ export default function TrainingGuideLayout({
           >
             <h2 className="text-2xl font-bold mb-4 text-primary">{section.title}</h2>
             <div className="prose prose-invert max-w-none">
-              {section.content.split('\n').map((paragraph, i) => (
-                paragraph && <p key={i} className="text-foreground/80 leading-relaxed mb-3">{paragraph}</p>
-              ))}
+              {renderMarkdown(section.content)}
             </div>
           </motion.section>
         ))}

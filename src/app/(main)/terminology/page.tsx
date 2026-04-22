@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 export default function TerminologyPage() {
   const fadeInUp = {
@@ -227,7 +228,17 @@ export default function TerminologyPage() {
               <p className="text-foreground/70 mb-4">{rank.description}</p>
               <div className="p-3 bg-background rounded-lg">
                 <span className="text-sm text-foreground/60">Skills in this category: </span>
-                <span className="text-sm text-primary font-medium">{rank.examples}</span>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {rank.examples.split(', ').map((skill, i) => (
+                    <Link 
+                      key={i}
+                      href="/tutorials"
+                      className="text-sm text-primary hover:text-primary-hover font-medium hover:underline"
+                    >
+                      {skill.trim()}
+                    </Link>
+                  ))}
+                </div>
               </div>
             </motion.div>
           ))}
