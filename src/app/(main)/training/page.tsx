@@ -17,9 +17,9 @@ export default function TrainingPage() {
       icon: <Dumbbell className="w-6 h-6" />,
       items: [
         'Calisthenics Fundamentals',
-        'Progressive Overload in Calisthenics',
-        'Gymnastics vs. Calisthenics',
-        'Full Body Workout vs. Split',
+        'Progressive Overload',
+        'Gymnastics vs Calisthenics',
+        'Full Body vs Split',
         'Rest and Recovery',
         'Conditioning and Activation'
       ]
@@ -37,8 +37,8 @@ export default function TrainingPage() {
       category: 'Training 101',
       icon: <BookOpen className="w-6 h-6" />,
       items: [
-        'Structuring a Calisthenics Workout (Beginner)',
-        'Structuring a Calisthenics Workout (Intermediate)',
+        'Beginner Workout Structure',
+        'Intermediate Workout Structure',
         'Strengthening Your Core',
         'Leg Training'
       ]
@@ -56,8 +56,8 @@ export default function TrainingPage() {
       category: 'Nutrition',
       icon: <Heart className="w-6 h-6" />,
       items: [
-        'General Nutrition Guide',
-        'Mass Gain vs. Definition Guide'
+        'General Nutrition',
+        'Mass Gain vs Definition'
       ]
     },
     {
@@ -149,7 +149,7 @@ export default function TrainingPage() {
                 {guide.items.map((item, i) => (
                   <li key={i}>
                     <Link
-                      href={`/training/${item.toLowerCase().replace(/\s+/g, '-').replace(/[()]/g, '')}`}
+                      href={`/training/${item.toLowerCase().replace(/\s+/g, '-').replace(/[()]/g, '').replace(/\./g, '')}`}
                       className="text-foreground/70 hover:text-primary transition-colors flex items-center gap-2 group"
                     >
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
