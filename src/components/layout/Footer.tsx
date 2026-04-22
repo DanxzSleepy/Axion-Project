@@ -23,8 +23,8 @@ export default function Footer() {
             <h3 className="text-lg font-bold mb-4 text-primary">Resources</h3>
             <ul className="space-y-2">
               <li><Link href="/how-to-use" className="text-foreground/70 hover:text-primary transition-colors">How to Use Site</Link></li>
-              <li><Link href="/beginner-guide" className="text-foreground/70 hover:text-primary transition-colors">Beginner Guide</Link></li>
-              <li><Link href="/intermediate-guide" className="text-foreground/70 hover:text-primary transition-colors">Intermediate Guide</Link></li>
+              <li><Link href="/training/beginner-workout-structure" className="text-foreground/70 hover:text-primary transition-colors">Beginner Guide</Link></li>
+              <li><Link href="/training/intermediate-workout-structure" className="text-foreground/70 hover:text-primary transition-colors">Intermediate Guide</Link></li>
             </ul>
           </div>
 
@@ -65,12 +65,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/donate" className="text-foreground/70 hover:text-primary transition-colors flex items-center gap-2">
-                  <Heart className="w-4 h-4" /> Donate
-                </Link>
+                <a href="mailto:contact@axion.com" className="text-foreground/70 hover:text-primary transition-colors flex items-center gap-2">
+                  <Heart className="w-4 h-4" /> Donate (Coming Soon)
+                </a>
               </li>
               <li>
-                <Link href="/report" className="text-foreground/70 hover:text-primary transition-colors flex items-center gap-2">
+                <Link href="/feedback" className="text-foreground/70 hover:text-primary transition-colors flex items-center gap-2">
                   <AlertCircle className="w-4 h-4" /> Report Issue
                 </Link>
               </li>
