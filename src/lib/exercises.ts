@@ -8,7 +8,7 @@ export const exercises: Exercise[] = [
     category: 'horizontal-push',
     difficulty: 'F',
     learningTime: '1-2 weeks',
-    description: 'A fundamental bodyweight exercise that targets the chest, shoulders, and triceps.',
+    description: 'A fundamental bodyweight exercise that targets the chest, shoulders, and triceps. Master this before attempting advanced variations like [Diamond Push-up](/tutorials) or [Archer Push-up](/tutorials).',
     musclesWorked: ['Chest', 'Shoulders', 'Triceps', 'Core'],
     highTensionAreas: ['Pectorals', 'Anterior Deltoids'],
     steps: [
@@ -17,6 +17,19 @@ export const exercises: Exercise[] = [
       'Push yourself back up to the starting position',
       'Keep your core engaged throughout the movement'
     ],
+    executionTips: [
+      'Keep your body in a straight line from head to heels',
+      'Engage your core and squeeze your glutes',
+      'Lower with control - don\'t just drop down',
+      'Full range of motion: chest to floor'
+    ],
+    commonMistakes: [
+      'Sagging hips or piking hips too high',
+      'Half reps - not going deep enough',
+      'Flaring elbows out at 90 degrees (keep at 45°)',
+      'Head drooping down or craning up'
+    ],
+    prerequisites: ['Basic core strength', 'Plank hold for 30 seconds'],
     mainExercises: ['Incline Push-up', 'Standard Push-up'],
     accessoryExercises: ['Diamond Push-up', 'Wide Push-up'],
     progression: {

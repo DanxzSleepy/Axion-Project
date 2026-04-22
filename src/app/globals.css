@@ -1,32 +1,58 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0f;
-  --foreground: #e5e5eb;
-  --primary: #6366f1;
-  --primary-hover: #4f46e5;
-  --secondary: #06b6d4;
-  --accent: #f59e0b;
-  --card: #13131f;
-  --card-hover: #1a1a2e;
-  --border: #2a2a3e;
-  --muted: #6b7280;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
+  /* AXION Brand Palette */
+  /* 70% Black / Dark Variations */
+  --background: #050505;
+  --background-light: #0a0a0a;
+  --card: #0f0f0f;
+  --card-hover: #151515;
+  --card-elevated: #1a1a1a;
+  
+  /* 20% White / Gray Variations */
+  --foreground: #e8e8e8;
+  --foreground-muted: #a0a0a0;
+  --foreground-subtle: #707070;
+  --border: #2a2a2a;
+  --border-light: #3a3a3a;
+  
+  /* 8% Light Green Accents */
+  --primary: #4ade80;
+  --primary-hover: #22c55e;
+  --primary-glow: rgba(74, 222, 128, 0.15);
+  --primary-subtle: rgba(74, 222, 128, 0.1);
+  
+  /* 2% Soft Cyan Accents */
+  --secondary: #22d3ee;
+  --secondary-hover: #06b6d4;
+  --secondary-glow: rgba(34, 211, 238, 0.15);
+  
+  /* Utility Colors */
+  --accent: #fbbf24;
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --danger: #f87171;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-light: var(--background-light);
   --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-subtle: var(--foreground-subtle);
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
+  --color-primary-glow: var(--primary-glow);
+  --color-primary-subtle: var(--primary-subtle);
   --color-secondary: var(--secondary);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-secondary-glow: var(--secondary-glow);
   --color-accent: var(--accent);
   --color-card: var(--card);
   --color-card-hover: var(--card-hover);
+  --color-card-elevated: var(--card-elevated);
   --color-border: var(--border);
-  --color-muted: var(--muted);
+  --color-border-light: var(--border-light);
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-danger: var(--danger);

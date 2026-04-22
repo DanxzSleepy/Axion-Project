@@ -108,7 +108,16 @@ export default function EnhancedProfilePage() {
   const levelProgress = getProgressToNextLevel(currentXP);
   const rankTier = RANK_TIERS.find(r => r.tier === currentRank);
 
-  const displayName = editMode ? editForm.display_name : (profile?.display_name || profile?.username || user.email?.split('@')[0] || 'User');
+  // Safe display name with fallback
+  const getDisplayName = () => {
+    if (editMode) {
+      return editForm.display_name || 'Your Name';
+    }
+    return profile?.display_name || profile?.username || user.email?.split('@')[0] || 'User';
+  };
+
+  const displayName = getDisplayName();
+  const avatarLetter = displayName && displayName.length > 0 ? displayName[0].toUpperCase() : '?';
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-6xl space-y-8">
@@ -125,7 +134,7 @@ export default function EnhancedProfilePage() {
               {profile?.avatar_url ? (
                 <img src={profile.avatar_url} alt="Avatar" className="w-full h-full rounded-full object-cover" />
               ) : (
-                displayName[0].toUpperCase()
+                avatarLetter
               )}
             </div>
             <button className="absolute bottom-0 right-0 p-2 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity">

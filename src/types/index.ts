@@ -11,6 +11,9 @@ export interface Exercise {
   mainExercises: string[];
   accessoryExercises: string[];
   progression: ProgressionChain;
+  executionTips?: string[];
+  commonMistakes?: string[];
+  prerequisites?: string[];
   imageUrl?: string;
 }
 
