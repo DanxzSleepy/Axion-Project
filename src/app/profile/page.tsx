@@ -8,20 +8,72 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function ProfilePage() {
+  const router = useRouter();
   const [showWorkoutForm, setShowWorkoutForm] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [profile, setProfile] = useState<any>(null);
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Mock data - will be replaced with Supabase data
-  const mockProfile = {
-    username: 'Athlete',
-    streak: 1,
-    longestStreak: 1,
-    totalWorkouts: 1,
-    totalRestDays: 0,
-    consistency: 100,
-    xp: 0,
-    rank: 'Bronze I',
-    lastWorkoutDate: '22/04/2026'
-  };
+  useEffect(() => {
+    const loadUserData = async () => {
+      const currentUser = await getCurrentUser();
+      
+      if (!currentUser) {
+        router.push('/login');
+        return;
+      }
+
+      setUser(currentUser);
+
+      try {
+        const [profileData, statsData] = await Promise.all([
+          getProfile(currentUser.id),
+          getUserStats(currentUser.id)
+        ]);
+        
+        setProfile(profileData);
+        setStats(statsData);
+      } catch (error) {
+        console.error('Error loading user data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUserData();
+  }, [router]);
+
+  if (loading) {
+    return (
+      <div className="min-h-[80vh] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-foreground/70">Loading profile...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user || !stats) {
+    return (
+      <div className="min-h-[80vh] flex items-center justify-center">
+        <div className="text-center">
+          <LogIn className="w-16 h-16 text-foreground/30 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold mb-2">Please sign in</h2>
+          <p className="text-foreground/70 mb-6">You need to be logged in to view your profile</p>
+          <Link
+            href="/login"
+            className="px-6 py-3 bg-primary hover:bg-primary-hover text-white rounded-lg transition-all font-medium inline-block"
+          >
+            Sign In
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const displayName = profile?.username || user.email?.split('@')[0] || 'User';
 
   return (
     <div className="container mx-auto px-4 py-12 space-y-8">
@@ -33,18 +85,19 @@ export default function ProfilePage() {
       >
         <div className="flex flex-col md:flex-row items-center gap-6">
           <div className="w-24 h-24 bg-primary/20 rounded-full flex items-center justify-center text-4xl font-bold text-primary">
-            {mockProfile.username[0]}
+            {displayName[0].toUpperCase()}
           </div>
           <div className="text-center md:text-left flex-1">
-            <h1 className="text-3xl font-bold mb-2">{mockProfile.username}</h1>
+            <h1 className="text-3xl font-bold mb-2">{displayName}</h1>
+            <p className="text-foreground/60 mb-3">{user.email}</p>
             <div className="flex flex-wrap gap-4 justify-center md:justify-start">
               <div className="px-4 py-2 bg-card rounded-lg">
                 <div className="text-sm text-foreground/60">Rank</div>
-                <div className="font-bold text-primary">{mockProfile.rank}</div>
+                <div className="font-bold text-primary">{stats.rank || 'Bronze I'}</div>
               </div>
               <div className="px-4 py-2 bg-card rounded-lg">
                 <div className="text-sm text-foreground/60">XP</div>
-                <div className="font-bold">{mockProfile.xp}</div>
+                <div className="font-bold">{stats.xp || 0}</div>
               </div>
             </div>
           </div>
@@ -60,7 +113,7 @@ export default function ProfilePage() {
           className="p-6 bg-card border border-border rounded-xl"
         >
           <Flame className="w-8 h-8 text-orange-500 mb-3" />
-          <div className="text-3xl font-bold mb-1">{mockProfile.streak} 🔥</div>
+          <div className="text-3xl font-bold mb-1">{stats.current_streak || 0} 🔥</div>
           <div className="text-sm text-foreground/60">Current Streak</div>
         </motion.div>
 
@@ -71,7 +124,7 @@ export default function ProfilePage() {
           className="p-6 bg-card border border-border rounded-xl"
         >
           <Trophy className="w-8 h-8 text-yellow-500 mb-3" />
-          <div className="text-3xl font-bold mb-1">{mockProfile.longestStreak}</div>
+          <div className="text-3xl font-bold mb-1">{stats.longest_streak || 0}</div>
           <div className="text-sm text-foreground/60">Longest Streak</div>
         </motion.div>
 
@@ -82,7 +135,7 @@ export default function ProfilePage() {
           className="p-6 bg-card border border-border rounded-xl"
         >
           <Calendar className="w-8 h-8 text-primary mb-3" />
-          <div className="text-3xl font-bold mb-1">{mockProfile.totalWorkouts}</div>
+          <div className="text-3xl font-bold mb-1">{stats.total_workouts || 0}</div>
           <div className="text-sm text-foreground/60">Total Workouts</div>
         </motion.div>
 
@@ -92,23 +145,25 @@ export default function ProfilePage() {
           transition={{ delay: 0.4 }}
           className="p-6 bg-card border border-border rounded-xl"
         >
-          <div className="text-3xl font-bold mb-1 text-success">{mockProfile.consistency}%</div>
+          <div className="text-3xl font-bold mb-1 text-success">{stats.consistency_percentage || 0}%</div>
           <div className="text-sm text-foreground/60">Consistency</div>
         </motion.div>
       </div>
 
       {/* Reminder */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="p-4 bg-warning/10 border border-warning/30 rounded-lg"
-      >
-        <p className="text-warning text-sm">
-          Don't forget to log your workout or rest day at least once per day to maintain your streak! 
-          Your last log was on {mockProfile.lastWorkoutDate}. Streak resets at 4 AM daily.
-        </p>
-      </motion.div>
+      {stats.last_workout_date && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="p-4 bg-warning/10 border border-warning/30 rounded-lg"
+        >
+          <p className="text-warning text-sm">
+            Don't forget to log your workout or rest day at least once per day to maintain your streak! 
+            Your last log was on {new Date(stats.last_workout_date).toLocaleDateString()}. Streak resets at 4 AM daily.
+          </p>
+        </motion.div>
+      )}
 
       {/* Workout Log Section */}
       <motion.section
@@ -139,7 +194,7 @@ export default function ProfilePage() {
             </div>
           </div>
         ) : (
-          <WorkoutForm onClose={() => setShowWorkoutForm(false)} />
+          <WorkoutForm onClose={() => setShowWorkoutForm(false)} userId={user.id} />
         )}
       </motion.section>
 
@@ -153,11 +208,14 @@ export default function ProfilePage() {
         <h2 className="text-2xl font-bold mb-6">Rank Progress</h2>
         <div className="mb-4">
           <div className="flex justify-between mb-2">
-            <span className="font-medium">{mockProfile.rank}</span>
-            <span className="text-foreground/60">0 / 1000 XP</span>
+            <span className="font-medium">{stats.rank || 'Bronze I'}</span>
+            <span className="text-foreground/60">{stats.xp || 0} / 1000 XP</span>
           </div>
           <div className="h-3 bg-background rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-primary to-secondary w-0 transition-all duration-500" />
+            <div 
+              className="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-500" 
+              style={{ width: `${Math.min(((stats.xp || 0) % 1000) / 10, 100)}%` }} 
+            />
           </div>
         </div>
         <p className="text-sm text-foreground/60">
@@ -168,7 +226,7 @@ export default function ProfilePage() {
   );
 }
 
-function WorkoutForm({ onClose }: { onClose: () => void }) {
+function WorkoutForm({ onClose, userId }: { onClose: () => void; userId: string }) {
   const [workoutData, setWorkoutData] = useState({
     date: new Date().toISOString().split('T')[0],
     category: 'push'
