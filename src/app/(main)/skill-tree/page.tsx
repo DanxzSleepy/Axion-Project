@@ -2,15 +2,21 @@
 
 import { motion } from 'framer-motion';
 import { Lock, CheckCircle, Circle, TreePine, TrendingUp, Target, Loader2 } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { getCurrentUser, getSkillProgress } from '@/lib/auth';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { unlockSkill } from '@/lib/xp-system';
+import { getSkillPaths } from '@/lib/skills-data';
+import { toast } from 'sonner';
 
 export default function SkillTreePage() {
   const { t } = useLanguage();
   const [user, setUser] = useState<any>(null);
   const [progress, setProgress] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [unlockingSkill, setUnlockingSkill] = useState<string | null>(null);
+
+  const skillPaths = useMemo(() => getSkillPaths(t), [t]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,91 +31,66 @@ export default function SkillTreePage() {
     fetchData();
   }, []);
 
-  const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.5 }
+  const getSkillStatus = (
+    skillId: string
+  ): 'locked' | 'available' | 'completed' => {
+    // Find skill in progress data
+    const userSkill = progress.find(p => p.skill_name === skillId || p.skill_id === skillId);
+
+    if (userSkill && userSkill.status === 'completed') {
+      return 'completed';
+    }
+
+    // Find skill definition to check prerequisites
+    let currentSkill: any = null;
+    for (const path of skillPaths) {
+      currentSkill = path.skills.find(s => s.id === skillId);
+      if (currentSkill) break;
+    }
+
+    if (!currentSkill) return 'locked';
+
+    // If no prerequisite, it's available
+    if (!currentSkill.prerequisiteId || currentSkill.requirement === 'None') {
+      return 'available';
+    }
+
+    // Check if prerequisite is completed
+    const prereqStatus = getSkillStatus(currentSkill.prerequisiteId);
+    return prereqStatus === 'completed' ? 'available' : 'locked';
   };
 
-  const skillPaths = [
-    {
-      name: t.skillTree.pushPath,
-      icon: '💪',
-      skills: [
-        { name: 'Push-up', requirement: 'None' },
-        { name: 'Diamond Push-up', requirement: '10 Push-ups' },
-        { name: 'Pike Push-up', requirement: '20 Push-ups' },
-        { name: 'Handstand', requirement: '15 Pike Push-ups' },
-        { name: 'Handstand Push-up', requirement: '30s Handstand Hold' },
-        { name: 'Planche Lean', requirement: '10 Handstand Push-ups' },
-        { name: 'Tuck Planche', requirement: '30s Planche Lean' },
-        { name: 'Full Planche', requirement: '10s Tuck Planche' }
-      ]
-    },
-    {
-      name: t.skillTree.pullPath,
-      icon: '🏋️',
-      skills: [
-        { name: 'Australian Pull-up', requirement: 'None' },
-        { name: 'Pull-up', requirement: '15 Australian Pull-ups' },
-        { name: 'Chin-up', requirement: '10 Pull-ups' },
-        { name: 'Muscle-up', requirement: '15 Pull-ups + 10 Dips' },
-        { name: 'Front Lever Tuck', requirement: '20 Pull-ups' },
-        { name: 'Advanced Front Lever', requirement: '15s Front Lever Tuck' },
-        { name: 'Full Front Lever', requirement: '10s Adv. Front Lever' },
-        { name: 'One-Arm Pull-up', requirement: '20 Pull-ups' }
-      ]
-    },
-    {
-      name: t.skillTree.corePath,
-      icon: '🎯',
-      skills: [
-        { name: 'Plank', requirement: 'None' },
-        { name: 'L-Sit Progression', requirement: '30s Plank' },
-        { name: 'Tuck L-Sit', requirement: '15s L-Sit Progression' },
-        { name: 'Full L-Sit', requirement: '10s Tuck L-Sit' },
-        { name: 'V-Sit', requirement: '15s Full L-Sit' },
-        { name: 'Manna', requirement: '10s V-Sit' }
-      ]
-    },
-    {
-      name: t.skillTree.legsPath,
-      icon: '🦵',
-      skills: [
-        { name: 'Squat', requirement: 'None' },
-        { name: 'Jump Squat', requirement: '20 Squats' },
-        { name: 'Pistol Squat Progression', requirement: '30 Squats' },
-        { name: 'Assisted Pistol Squat', requirement: '15 Jump Squats' },
-        { name: 'Pistol Squat', requirement: '10 Assisted Pistol Squats (each leg)' },
-        { name: 'Shrimp Squat', requirement: '10 Pistol Squats (each leg)' }
-      ]
-    }
-  ];
-
-  const getSkillStatus = (
-    skillName: string
-  ): 'locked' | 'available' | 'completed' => {
-    const userSkill = progress.find(p => p.skill_name === skillName);
-
-    if (userSkill) {
-      return userSkill.status as 'locked' | 'available' | 'completed';
+  const handleUnlockSkill = async (skill: any) => {
+    if (!user) {
+      toast.error(t.skillTree.signInToTrack);
+      return;
     }
 
-    // Default logic if no progress record exists
-    for (const path of skillPaths) {
-      const index = path.skills.findIndex(s => s.name === skillName);
-
-      if (index !== -1) {
-        if (index === 0) return 'available';
-
-        const prevSkill = path.skills[index - 1];
-        const prevStatus = getSkillStatus(prevSkill.name);
-
-        return prevStatus === 'completed' ? 'available' : 'locked';
-      }
+    const status = getSkillStatus(skill.id);
+    if (status === 'locked') {
+      toast.error(t.skillTree.prerequisiteNotMet);
+      return;
     }
 
-    return 'locked';
+    if (status === 'completed') return;
+
+    setUnlockingSkill(skill.id);
+    try {
+      await unlockSkill(user.id, skill.name, skill.xpReward);
+      
+      // Refresh progress
+      const updatedProgress = await getSkillProgress(user.id);
+      setProgress(updatedProgress);
+      
+      toast.success(t.skillTree.unlockSuccess, {
+        description: `+${skill.xpReward} XP`
+      });
+    } catch (error) {
+      console.error('Error unlocking skill:', error);
+      toast.error(t.skillTree.unlockError);
+    } finally {
+      setUnlockingSkill(null);
+    }
   };
 
   const getStatusIcon = (status: string) => {
@@ -150,10 +131,10 @@ export default function SkillTreePage() {
 
   const completedSkillsCount = progress.filter(p => p.status === 'completed').length;
   const availableSkillsCount = skillPaths.reduce((acc, path) => {
-    return acc + path.skills.filter(s => getSkillStatus(s.name) === 'available').length;
+    return acc + path.skills.filter(s => getSkillStatus(s.id) === 'available').length;
   }, 0);
   const totalSkills = skillPaths.reduce((acc, path) => acc + path.skills.length, 0);
-  const completionPercentage = Math.round((completedSkillsCount / totalSkills) * 100);
+  const completionPercentage = totalSkills > 0 ? Math.round((completedSkillsCount / totalSkills) * 100) : 0;
 
   return (
     <div className="container mx-auto px-4 py-12 space-y-16 max-w-7xl">
@@ -234,7 +215,7 @@ export default function SkillTreePage() {
 
               <div className="space-y-6">
                 {path.skills.map((skill, skillIndex) => {
-                  const status = getSkillStatus(skill.name);
+                  const status = getSkillStatus(skill.id);
                   return (
                     <motion.div
                       key={skillIndex}
@@ -267,8 +248,19 @@ export default function SkillTreePage() {
                         </div>
 
                         {status === 'available' && (
-                          <button className="px-5 py-2 bg-primary hover:bg-primary-hover text-white rounded-xl text-sm font-bold transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-primary/20">
-                            {t.skillTree.startTraining}
+                          <button 
+                            onClick={() => handleUnlockSkill(skill)}
+                            disabled={unlockingSkill === skill.id}
+                            className="px-5 py-2 bg-primary hover:bg-primary-hover text-white rounded-xl text-sm font-bold transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                          >
+                            {unlockingSkill === skill.id ? (
+                              <>
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                                {t.common.loading}
+                              </>
+                            ) : (
+                              t.skillTree.startTraining
+                            )}
                           </button>
                         )}
                       </div>

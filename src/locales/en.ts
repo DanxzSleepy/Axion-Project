@@ -332,6 +332,9 @@ export const en = {
     pullPath: "Pull Path",
     corePath: "Core & Static Path",
     legsPath: "Legs Path",
+    unlockSuccess: "Skill successfully unlocked!",
+    unlockError: "Error unlocking skill. Please try again.",
+    prerequisiteNotMet: "You need to complete the prerequisites first!",
   },
   terminology: {
     title: "Terminology",

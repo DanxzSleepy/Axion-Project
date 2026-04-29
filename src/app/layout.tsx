@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BetaBadge from "@/components/ui/BetaBadge";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { Toaster } from 'sonner';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +40,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <Toaster position="bottom-right" theme="dark" richColors />
         </LanguageProvider>
       </body>
     </html>

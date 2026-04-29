@@ -7,6 +7,7 @@ import { Dumbbell, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 import { signUp, signInWithGoogle } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { toast } from 'sonner';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -41,10 +42,11 @@ export default function RegisterPage() {
     try {
       await signUp(formData.email, formData.password, formData.username);
       setError('');
-      alert(t.auth.alerts.accountCreated);
+      toast.success(t.auth.alerts.accountCreated);
       router.push('/login');
     } catch (err: any) {
       setError(err.message || t.auth.errors.signUpFailed);
+      toast.error(err.message || t.auth.errors.signUpFailed);
     } finally {
       setLoading(false);
     }

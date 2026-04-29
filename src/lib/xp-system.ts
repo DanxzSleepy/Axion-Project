@@ -139,23 +139,77 @@ export async function toggleSaveGuide(userId: string, guideSlug: string) {
   return updateProfile(userId, { saved_guides: newSaved });
 }
 
-export async function awardXP(userId: string, amount: number, reason: string) {
-  const { data, error } = await supabase.rpc('award_xp', {
-    p_user_id: userId,
-    p_xp_amount: amount,
-    p_reason: reason
-  });
+export async function awardXP(userId: string, amount: number) {
+  // First get current XP
+  const { data: stats, error: fetchError } = await supabase
+    .from('user_stats')
+    .select('xp')
+    .eq('user_id', userId)
+    .single();
+
+  if (fetchError) throw fetchError;
+
+  const newXP = (stats?.xp || 0) + amount;
+
+  const { data, error } = await supabase
+    .from('user_stats')
+    .update({ xp: newXP })
+    .eq('user_id', userId)
+    .select()
+    .single();
 
   if (error) throw error;
   return data;
 }
 
-export async function getUserLeaderboard(limit: number = 50) {
+export async function unlockSkill(userId: string, skillName: string, xpReward: number = XP_REWARDS.SKILL_UNLOCK) {
+  // Check if skill already unlocked
+  const { data: existing } = await supabase
+    .from('skill_progress')
+    .select('status')
+    .eq('user_id', userId)
+    .eq('skill_name', skillName)
+    .single();
+
+  if (existing?.status === 'completed') {
+    return existing;
+  }
+
+  // Upsert skill progress
   const { data, error } = await supabase
-    .from('leaderboard')
-    .select('*')
-    .limit(limit);
+    .from('skill_progress')
+    .upsert({
+      user_id: userId,
+      skill_name: skillName,
+      status: 'completed',
+      progress_percentage: 100,
+      completed_at: new Date().toISOString()
+    })
+    .select()
+    .single();
 
   if (error) throw error;
+
+  // Award XP
+  await awardXP(userId, xpReward);
+
   return data;
+}
+
+export async function getUserLeaderboard(limit: number = 50) {
+  try {
+    const { data, error } = await supabase
+      .from('leaderboard')
+      .select('*')
+      .limit(limit);
+
+    if (error) {
+      console.warn('Leaderboard fetch error:', error);
+      return [];
+    }
+    return data || [];
+  } catch (err) {
+    console.error('Unexpected error fetching leaderboard:', err);
+    return [];
+  }
 }

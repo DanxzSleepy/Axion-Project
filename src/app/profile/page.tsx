@@ -11,6 +11,7 @@ import {
   BookMarked, Share2, Settings, LogIn, Star, TrendingUp, Target, Loader2
 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { toast } from 'sonner';
 
 export default function EnhancedProfilePage() {
   const router = useRouter();
@@ -40,20 +41,32 @@ export default function EnhancedProfilePage() {
       setUser(currentUser);
 
       try {
-        const [profileData, statsData] = await Promise.all([
-          getProfile(currentUser.id),
-          getUserStats(currentUser.id)
-        ]);
+        let profileData = null;
+        let statsData = null;
+
+        try {
+          profileData = await getProfile(currentUser.id);
+        } catch (err: any) {
+          console.warn('Profile not found, might need to be created:', err.message);
+          // If profile doesn't exist, we might want to create it or just use null
+        }
+
+        try {
+          statsData = await getUserStats(currentUser.id);
+        } catch (err: any) {
+          console.warn('Stats not found, might need to be created:', err.message);
+        }
         
         setProfile(profileData);
-        setStats(statsData);
+        setStats(statsData || { xp: 0, current_streak: 0, total_workouts: 0 });
         setEditForm({
           display_name: profileData?.display_name || '',
           nickname: profileData?.nickname || '',
           bio: profileData?.bio || ''
         });
-      } catch (error) {
-        console.error('Error loading user data:', error);
+      } catch (error: any) {
+        console.error('Critical error loading user data:', error);
+        toast.error(t.profile.profileUpdateError);
       } finally {
         setLoading(false);
       }
@@ -70,9 +83,15 @@ export default function EnhancedProfilePage() {
       const updated = await updateProfile(user.id, editForm);
       setProfile(updated);
       setEditMode(false);
-    } catch (error) {
-      console.error('Error updating profile:', error);
-      alert('Failed to update profile');
+      toast.success(t.common.success);
+    } catch (error: any) {
+      console.error('Full Error updating profile:', {
+        message: error.message,
+        details: error.details,
+        code: error.code,
+        hint: error.hint
+      });
+      toast.error(error.message || t.profile.profileUpdateError);
     } finally {
       setSaving(false);
     }
@@ -84,12 +103,12 @@ export default function EnhancedProfilePage() {
 
     // Basic validation
     if (!file.type.startsWith('image/')) {
-      alert('Please upload an image file');
+      toast.error(t.profile.imageFileError);
       return;
     }
 
     if (file.size > 2 * 1024 * 1024) { // 2MB limit
-      alert('File size must be less than 2MB');
+      toast.error(t.profile.fileSizeError);
       return;
     }
 
@@ -97,9 +116,10 @@ export default function EnhancedProfilePage() {
     try {
       const updatedProfile = await uploadAvatar(user.id, file);
       setProfile(updatedProfile);
-    } catch (error) {
+      toast.success(t.common.success);
+    } catch (error: any) {
       console.error('Error uploading avatar:', error);
-      alert('Failed to upload avatar');
+      toast.error(error.message || t.profile.avatarUploadError);
     } finally {
       setUploading(false);
     }

@@ -332,6 +332,9 @@ export const pt = {
     pullPath: "Caminho de Puxar",
     corePath: "Caminho de Core e Estáticos",
     legsPath: "Caminho de Pernas",
+    unlockSuccess: "Habilidade desbloqueada com sucesso!",
+    unlockError: "Erro ao desbloquear habilidade. Tente novamente.",
+    prerequisiteNotMet: "Você precisa completar os pré-requisitos primeiro!",
   },
   terminology: {
     title: "Terminologia",

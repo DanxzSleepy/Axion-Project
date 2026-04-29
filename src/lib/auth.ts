@@ -98,10 +98,23 @@ export async function getProfile(userId: string) {
     .single();
 
   if (error) {
+    if (error.code === 'PGRST116') return null;
     throw error;
   }
 
   return data;
+}
+
+// Check if user is admin
+export async function isAdmin(userId: string) {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', userId)
+    .single();
+
+  if (error) return false;
+  return data?.role === 'admin';
 }
 
 // Get user stats

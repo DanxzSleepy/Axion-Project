@@ -31,6 +31,13 @@ export default function TutorialsPage() {
     return colors[difficulty] || 'text-foreground';
   };
 
+  const getYouTubeEmbedUrl = (url?: string) => {
+    if (!url) return null;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}` : null;
+  };
+
   return (
     <div className="container mx-auto px-4 py-12">
       {/* Header */}
@@ -178,6 +185,46 @@ export default function TutorialsPage() {
                     ))}
                   </ol>
                 </div>
+
+                {/* Video Tutorials */}
+                {(selectedExercise.techniqueVideoUrl || selectedExercise.progressionVideoUrl) && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {selectedExercise.techniqueVideoUrl && (
+                      <div>
+                        <h3 className="text-xl font-bold mb-3 text-primary flex items-center gap-2">
+                          <TrendingUp className="w-5 h-5" />
+                          Técnica
+                        </h3>
+                        <div className="relative pt-[56.25%] rounded-xl overflow-hidden bg-black border border-border">
+                          <iframe
+                            className="absolute inset-0 w-full h-full"
+                            src={getYouTubeEmbedUrl(selectedExercise.techniqueVideoUrl)!}
+                            title="Technique Tutorial"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          ></iframe>
+                        </div>
+                      </div>
+                    )}
+                    {selectedExercise.progressionVideoUrl && (
+                      <div>
+                        <h3 className="text-xl font-bold mb-3 text-primary flex items-center gap-2">
+                          <TrendingUp className="w-5 h-5" />
+                          Progressão
+                        </h3>
+                        <div className="relative pt-[56.25%] rounded-xl overflow-hidden bg-black border border-border">
+                          <iframe
+                            className="absolute inset-0 w-full h-full"
+                            src={getYouTubeEmbedUrl(selectedExercise.progressionVideoUrl)!}
+                            title="Progression Tutorial"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          ></iframe>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* Progression Table */}
                 <div>

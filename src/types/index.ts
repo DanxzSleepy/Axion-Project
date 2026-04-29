@@ -15,6 +15,8 @@ export interface Exercise {
   commonMistakes?: string[];
   prerequisites?: string[];
   imageUrl?: string;
+  techniqueVideoUrl?: string;
+  progressionVideoUrl?: string;
 }
 
 export type ExerciseCategory = 
@@ -59,10 +61,27 @@ export interface ExerciseEntry {
   notes?: string;
 }
 
+export interface Skill {
+  id: string;
+  name: string;
+  requirement: string;
+  prerequisiteId?: string;
+  xpReward: number;
+}
+
+export interface SkillPath {
+  name: string;
+  icon: string;
+  skills: Skill[];
+}
+
 export interface UserProfile {
   id: string;
   username: string;
-  avatar?: string;
+  display_name?: string;
+  nickname?: string;
+  avatar_url?: string;
+  role: 'user' | 'admin';
   streak: number;
   longestStreak: number;
   totalWorkouts: number;

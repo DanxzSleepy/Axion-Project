@@ -2,25 +2,56 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { MessageSquare, Bug, Lightbulb, Heart, Send, CheckCircle, Users } from 'lucide-react';
+import { MessageSquare, Bug, Lightbulb, Heart, Send, CheckCircle, Users, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { supabase } from '@/lib/supabase';
+import { getCurrentUser } from '@/lib/auth';
+import { useEffect } from 'react';
 
 export default function FeedbackPage() {
   const { t } = useLanguage();
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<any>(null);
   const [formData, setFormData] = useState({
     type: 'general',
     message: '',
     email: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    const fetchUser = async () => {
+      const currentUser = await getCurrentUser();
+      setUser(currentUser);
+      if (currentUser?.email) {
+        setFormData(prev => ({ ...prev, email: currentUser.email! }));
+      }
+    };
+    fetchUser();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Connect to Supabase or email service
-    console.log('Feedback submitted:', formData);
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 5000);
-    setFormData({ type: 'general', message: '', email: '' });
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.from('feedback').insert({
+        user_id: user?.id || null,
+        email: formData.email,
+        type: formData.type,
+        message: formData.message
+      });
+
+      if (error) throw error;
+
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 5000);
+      setFormData({ ...formData, message: '' });
+    } catch (err) {
+      console.error('Error submitting feedback:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -120,10 +151,20 @@ export default function FeedbackPage() {
 
             <button
               type="submit"
-              className="w-full px-6 py-3 bg-primary hover:bg-primary-hover text-white rounded-lg transition-all font-medium flex items-center justify-center gap-2"
+              disabled={loading}
+              className="w-full py-4 bg-primary hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl font-bold transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
             >
-              <Send className="w-4 h-4" />
-              {t.feedback.submitButton}
+              {loading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  {t.feedback.submitting}
+                </>
+              ) : (
+                <>
+                  <Send className="w-5 h-5" />
+                  {t.feedback.submitButton}
+                </>
+              )}
             </button>
           </form>
         </motion.div>

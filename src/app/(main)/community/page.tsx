@@ -7,6 +7,7 @@ import { getCurrentUser, getProfile } from '@/lib/auth';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Trophy, Users, Star, TrendingUp, Flame, Loader2, UserPlus, Globe } from 'lucide-react';
 import Link from 'next/link';
+import { toast } from 'sonner';
 
 export default function CommunityPage() {
   const { t } = useLanguage();
@@ -19,20 +20,28 @@ export default function CommunityPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [leaderboardData, user] = await Promise.all([
-          getUserLeaderboard(20),
-          getCurrentUser()
-        ]);
-        
-        setLeaderboard(leaderboardData);
+        const user = await getCurrentUser();
         setCurrentUser(user);
 
+        // Fetch leaderboard separately to prevent one failure from blocking everything
+        try {
+          const leaderboardData = await getUserLeaderboard(20);
+          setLeaderboard(leaderboardData || []);
+        } catch (err) {
+          console.warn('Leaderboard could not be loaded:', err);
+          setLeaderboard([]);
+        }
+
         if (user) {
-          const profileData = await getProfile(user.id);
-          setProfile(profileData);
+          try {
+            const profileData = await getProfile(user.id);
+            setProfile(profileData);
+          } catch (err) {
+            console.warn('User profile could not be loaded:', err);
+          }
         }
       } catch (error) {
-        console.error('Error fetching community data:', error);
+        console.error('Critical error fetching community data:', error);
       } finally {
         setLoading(false);
       }
@@ -50,9 +59,10 @@ export default function CommunityPage() {
       // Refresh leaderboard
       const leaderboardData = await getUserLeaderboard(20);
       setLeaderboard(leaderboardData);
-    } catch (error) {
+      toast.success(t.common.success);
+    } catch (error: any) {
       console.error('Error joining community:', error);
-      alert('Failed to join community');
+      toast.error(error.message || 'Failed to join community');
     } finally {
       setJoining(false);
     }

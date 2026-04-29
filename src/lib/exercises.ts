@@ -32,6 +32,8 @@ export const exercises: Exercise[] = [
     prerequisites: ['Basic core strength', 'Plank hold for 30 seconds'],
     mainExercises: ['Incline Push-up', 'Standard Push-up'],
     accessoryExercises: ['Diamond Push-up', 'Wide Push-up'],
+    techniqueVideoUrl: 'https://www.youtube.com/watch?v=IODxDxX7oi4',
+    progressionVideoUrl: 'https://www.youtube.com/watch?v=X0SHe8mO9vM',
     progression: {
       regression: 'Wall Push-up',
       current: 'Push-up',
@@ -56,6 +58,8 @@ export const exercises: Exercise[] = [
     ],
     mainExercises: ['Pike Push-up'],
     accessoryExercises: ['Elevated Pike Push-up'],
+    techniqueVideoUrl: 'https://www.youtube.com/watch?v=lIZ_C4VJnmc',
+    progressionVideoUrl: 'https://www.youtube.com/watch?v=fXgou2W10ok',
     progression: {
       regression: 'Push-up',
       current: 'Pike Push-up',
@@ -93,6 +97,8 @@ export const exercises: Exercise[] = [
     prerequisites: ['10-15 solid push-ups'],
     mainExercises: ['Parallel Bar Dips'],
     accessoryExercises: ['Bench Dips', 'Straight Bar Dips'],
+    techniqueVideoUrl: 'https://www.youtube.com/watch?v=2IUoEAzjZqY',
+    progressionVideoUrl: 'https://www.youtube.com/watch?v=nHRrW_JSru8',
     progression: {
       regression: 'Bench Dips',
       current: 'Dips',
@@ -119,6 +125,8 @@ export const exercises: Exercise[] = [
     ],
     mainExercises: ['Wall Handstand', 'Freestanding Handstand'],
     accessoryExercises: ['Handstand Holds', 'Handstand Walks'],
+    techniqueVideoUrl: 'https://www.youtube.com/watch?v=Y3FSeSecjKA',
+    progressionVideoUrl: 'https://www.youtube.com/watch?v=oZ_pL0_pE6o',
     progression: {
       regression: 'Wall Plank',
       current: 'Handstand',
@@ -145,6 +153,8 @@ export const exercises: Exercise[] = [
     ],
     mainExercises: ['Australian Pull-up'],
     accessoryExercises: ['Wide Grip Australian Pull-up'],
+    techniqueVideoUrl: 'https://www.youtube.com/watch?v=eGo4IYlbE5g',
+    progressionVideoUrl: 'https://www.youtube.com/watch?v=HrJOaochoEU',
     progression: {
       regression: 'Assisted Australian Pull-up',
       current: 'Australian Pull-up',
@@ -171,6 +181,8 @@ export const exercises: Exercise[] = [
     ],
     mainExercises: ['Pull-up'],
     accessoryExercises: ['Chin-up', 'Wide Grip Pull-up'],
+    techniqueVideoUrl: 'https://www.youtube.com/watch?v=eGo4IYlbE5g',
+    progressionVideoUrl: 'https://www.youtube.com/watch?v=3YvfRx31xDE',
     progression: {
       regression: 'Assisted Pull-up',
       current: 'Pull-up',
@@ -197,6 +209,8 @@ export const exercises: Exercise[] = [
     ],
     mainExercises: ['Bodyweight Squat'],
     accessoryExercises: ['Pistol Squat Progression', 'Jump Squats'],
+    techniqueVideoUrl: 'https://www.youtube.com/watch?v=ZI3gB5irv5g',
+    progressionVideoUrl: 'https://www.youtube.com/watch?v=ZI3gB5irv5g',
     progression: {
       regression: 'Assisted Squat',
       current: 'Squat',
@@ -253,6 +267,8 @@ export const exercises: Exercise[] = [
     ],
     mainExercises: ['Tuck L-Sit', 'Full L-Sit'],
     accessoryExercises: ['L-Sit Holds', 'Compression Work'],
+    techniqueVideoUrl: 'https://www.youtube.com/watch?v=cu0fHp8HCDo',
+    progressionVideoUrl: 'https://www.youtube.com/watch?v=BbAkWxDZKIM',
     progression: {
       regression: 'Foot-supported L-Sit',
       current: 'L-Sit',
@@ -274,6 +290,8 @@ export const exercises: Exercise[] = [
     steps: ['Place hands close together forming a diamond shape', 'Lower your chest to your hands', 'Push back up maintaining tight core', 'Keep elbows close to your body'],
     mainExercises: ['Diamond Push-up'],
     accessoryExercises: ['Close-grip Push-up'],
+    techniqueVideoUrl: 'https://www.youtube.com/watch?v=IODxDxX7oi4',
+    progressionVideoUrl: 'https://www.youtube.com/watch?v=FU_5LPjtjus',
     progression: { regression: 'Standard Push-up', current: 'Diamond Push-up', progression: 'Archer Push-up', target: 'One-Arm Push-up' }
   },
   {
@@ -348,6 +366,8 @@ export const exercises: Exercise[] = [
     steps: ['Explosive pull-up to chest height', 'Transition over the bar', 'Press out to dip position', 'Lower with control'],
     mainExercises: ['Bar Muscle-up', 'Ring Muscle-up'],
     accessoryExercises: ['Explosive Pull-ups', 'False Grip Hangs'],
+    techniqueVideoUrl: 'https://www.youtube.com/watch?v=2T_5m3E_FfI',
+    progressionVideoUrl: 'https://www.youtube.com/watch?v=yYf6_t77h3w',
     progression: { regression: 'Jumping Muscle-up', current: 'Muscle-up', progression: '360 Muscle-up', target: 'One-Arm Muscle-up' }
   },
   {
@@ -450,6 +470,8 @@ export const exercises: Exercise[] = [
     steps: ['Start in tuck planche position', 'Slowly extend legs', 'Keep arms straight and body tight', 'Hold horizontal position'],
     mainExercises: ['Tuck Planche', 'Advanced Tuck PL', 'Straddle PL', 'Full Planche'],
     accessoryExercises: ['Planche Lean', 'Pseudo Planche Push-ups'],
+    techniqueVideoUrl: 'https://www.youtube.com/watch?v=vV_X49Y-f9g',
+    progressionVideoUrl: 'https://www.youtube.com/watch?v=gT-Wp77qRoc',
     progression: { regression: 'Planche Lean', current: 'Planche', progression: 'Planche Push-up', target: 'One-Arm Planche' }
   },
   {
