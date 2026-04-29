@@ -86,21 +86,29 @@ export default function SkillTreePage() {
     }
   ];
 
-  const getSkillStatus = (skillName: string) => {
+  const getSkillStatus = (
+    skillName: string
+  ): 'locked' | 'available' | 'completed' => {
     const userSkill = progress.find(p => p.skill_name === skillName);
-    if (userSkill) return userSkill.status;
-    
+
+    if (userSkill) {
+      return userSkill.status as 'locked' | 'available' | 'completed';
+    }
+
     // Default logic if no progress record exists
-    // Find path and index
     for (const path of skillPaths) {
       const index = path.skills.findIndex(s => s.name === skillName);
+
       if (index !== -1) {
         if (index === 0) return 'available';
+
         const prevSkill = path.skills[index - 1];
         const prevStatus = getSkillStatus(prevSkill.name);
+
         return prevStatus === 'completed' ? 'available' : 'locked';
       }
     }
+
     return 'locked';
   };
 
@@ -237,19 +245,17 @@ export default function SkillTreePage() {
                       className={`relative group p-6 border-2 rounded-2xl transition-all duration-300 ${getStatusColor(status)}`}
                     >
                       {/* Node Dot */}
-                      <div className={`absolute -left-[22px] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 bg-background z-10 transition-colors ${
-                        status === 'completed' ? 'border-success bg-success' : 
-                        status === 'available' ? 'border-primary bg-primary animate-pulse' : 
-                        'border-border'
-                      }`} />
+                      <div className={`absolute -left-[22px] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 bg-background z-10 transition-colors ${status === 'completed' ? 'border-success bg-success' :
+                          status === 'available' ? 'border-primary bg-primary animate-pulse' :
+                            'border-border'
+                        }`} />
 
                       <div className="flex items-center justify-between gap-4">
                         <div className="flex items-center gap-4">
-                          <div className={`p-2 rounded-lg ${
-                            status === 'completed' ? 'bg-success/10' : 
-                            status === 'available' ? 'bg-primary/10' : 
-                            'bg-muted'
-                          }`}>
+                          <div className={`p-2 rounded-lg ${status === 'completed' ? 'bg-success/10' :
+                              status === 'available' ? 'bg-primary/10' :
+                                'bg-muted'
+                            }`}>
                             {getStatusIcon(status)}
                           </div>
                           <div>
@@ -259,7 +265,7 @@ export default function SkillTreePage() {
                             </p>
                           </div>
                         </div>
-                        
+
                         {status === 'available' && (
                           <button className="px-5 py-2 bg-primary hover:bg-primary-hover text-white rounded-xl text-sm font-bold transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-primary/20">
                             {t.skillTree.startTraining}
