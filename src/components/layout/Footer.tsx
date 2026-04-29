@@ -1,46 +1,52 @@
+'use client';
 import Link from 'next/link';
 import { Mail, MessageSquare, Heart, AlertCircle } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Footer() {
+  const { t } = useLanguage();
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="bg-[#0a0a0f] border-t border-[#2a2a3e] mt-20">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-bold mb-4 text-primary">Quick Links</h3>
+            <h3 className="text-lg font-bold mb-4 text-primary">{t.footer.quickLinks}</h3>
             <ul className="space-y-2">
-              <li><Link href="/" className="text-foreground/70 hover:text-primary transition-colors">Home</Link></li>
-              <li><Link href="/tutorials" className="text-foreground/70 hover:text-primary transition-colors">Tutorials / Skills</Link></li>
-              <li><Link href="/training" className="text-foreground/70 hover:text-primary transition-colors">Training Guides</Link></li>
-              <li><Link href="/terminology" className="text-foreground/70 hover:text-primary transition-colors">Terminology</Link></li>
-              <li><Link href="/skill-tree" className="text-foreground/70 hover:text-primary transition-colors">Skill Tree</Link></li>
+              <li><Link href="/" className="text-foreground/70 hover:text-primary transition-colors">{t.common.home}</Link></li>
+              <li><Link href="/tutorials" className="text-foreground/70 hover:text-primary transition-colors">{t.common.tutorials}</Link></li>
+              <li><Link href="/training" className="text-foreground/70 hover:text-primary transition-colors">{t.common.training}</Link></li>
+              <li><Link href="/skill-tree" className="text-foreground/70 hover:text-primary transition-colors">{t.common.skillTree}</Link></li>
+              <li><Link href="/terminology" className="text-foreground/70 hover:text-primary transition-colors">{t.common.terminology}</Link></li>
+              <li><Link href="/community" className="text-foreground/70 hover:text-primary transition-colors">{t.common.community}</Link></li>
             </ul>
           </div>
 
           {/* Resources */}
           <div>
-            <h3 className="text-lg font-bold mb-4 text-primary">Resources</h3>
+            <h3 className="text-lg font-bold mb-4 text-primary">{t.footer.resources}</h3>
             <ul className="space-y-2">
-              <li><Link href="/how-to-use" className="text-foreground/70 hover:text-primary transition-colors">How to Use Site</Link></li>
-              <li><Link href="/training/beginner-workout-structure" className="text-foreground/70 hover:text-primary transition-colors">Beginner Guide</Link></li>
-              <li><Link href="/training/intermediate-workout-structure" className="text-foreground/70 hover:text-primary transition-colors">Intermediate Guide</Link></li>
+              <li><Link href="/how-to-use" className="text-foreground/70 hover:text-primary transition-colors">{t.footer.howToUse}</Link></li>
+              <li><Link href="/training/beginner-workout-structure" className="text-foreground/70 hover:text-primary transition-colors">{t.footer.beginnerGuide}</Link></li>
+              <li><Link href="/training/intermediate-workout-structure" className="text-foreground/70 hover:text-primary transition-colors">{t.footer.intermediateGuide}</Link></li>
             </ul>
           </div>
 
           {/* About */}
           <div>
-            <h3 className="text-lg font-bold mb-4 text-primary">About Us</h3>
+            <h3 className="text-lg font-bold mb-4 text-primary">{t.footer.aboutUs}</h3>
             <ul className="space-y-2">
               <li><Link href="/about" className="text-foreground/70 hover:text-primary transition-colors">About AXION</Link></li>
-              <li><Link href="/terms" className="text-foreground/70 hover:text-primary transition-colors">Terms & Conditions</Link></li>
-              <li><Link href="/privacy" className="text-foreground/70 hover:text-primary transition-colors">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="text-foreground/70 hover:text-primary transition-colors">{t.footer.terms}</Link></li>
+              <li><Link href="/privacy" className="text-foreground/70 hover:text-primary transition-colors">{t.footer.privacy}</Link></li>
             </ul>
           </div>
 
           {/* Contact */}
           <div>
-            <h3 className="text-lg font-bold mb-4 text-primary">Contact Us</h3>
+            <h3 className="text-lg font-bold mb-4 text-primary">{t.footer.contactUs}</h3>
             <ul className="space-y-2">
               <li>
                 <a href="mailto:contact@axion.com" className="text-foreground/70 hover:text-primary transition-colors flex items-center gap-2">
@@ -57,21 +63,21 @@ export default function Footer() {
 
           {/* Support */}
           <div>
-            <h3 className="text-lg font-bold mb-4 text-primary">Support</h3>
+            <h3 className="text-lg font-bold mb-4 text-primary">{t.footer.support}</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/feedback" className="text-foreground/70 hover:text-primary transition-colors flex items-center gap-2">
-                  <MessageSquare className="w-4 h-4" /> Feedback
+                  <MessageSquare className="w-4 h-4" /> {t.footer.feedback}
                 </Link>
               </li>
               <li>
                 <a href="mailto:contact@axion.com" className="text-foreground/70 hover:text-primary transition-colors flex items-center gap-2">
-                  <Heart className="w-4 h-4" /> Donate (Coming Soon)
+                  <Heart className="w-4 h-4" /> {t.footer.donate}
                 </a>
               </li>
               <li>
                 <Link href="/feedback" className="text-foreground/70 hover:text-primary transition-colors flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4" /> Report Issue
+                  <AlertCircle className="w-4 h-4" /> {t.footer.reportIssue}
                 </Link>
               </li>
             </ul>
@@ -82,30 +88,33 @@ export default function Footer() {
         <div className="border-t border-[#2a2a3e] pt-8 mb-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-center md:text-left">
-              <h3 className="text-xl font-bold mb-2">Ready to start your calisthenics journey?</h3>
-              <p className="text-foreground/70">Create an account and track your progress</p>
+              <h3 className="text-xl font-bold mb-2">{t.footer.readyToStart}</h3>
+              <p className="text-foreground/70">{t.footer.createAccount}</p>
             </div>
             <div className="flex gap-3">
               <Link
                 href="/login"
                 className="px-6 py-3 border border-[#2a2a3e] hover:border-primary text-foreground rounded-lg transition-all duration-200"
               >
-                Login
+                {t.common.login}
               </Link>
               <Link
                 href="/register"
                 className="px-6 py-3 bg-primary hover:bg-primary-hover text-white rounded-lg transition-all duration-200 font-medium"
               >
-                Create Account
+                {t.common.register}
               </Link>
             </div>
           </div>
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-[#2a2a3e] pt-8 text-center text-foreground/50">
-          <p>&copy; 2026 AXION. All rights reserved.</p>
-          <p className="mt-2 text-sm">Built with passion for calisthenics community</p>
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-foreground/50 border-t border-[#2a2a3e] pt-8">
+          <p>© {currentYear} AXION. {t.footer.copyright}</p>
+          <div className="flex gap-6">
+            <Link href="/terms" className="hover:text-primary transition-colors">{t.footer.terms}</Link>
+            <Link href="/privacy" className="hover:text-primary transition-colors">{t.footer.privacy}</Link>
+          </div>
         </div>
       </div>
     </footer>

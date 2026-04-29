@@ -1,9 +1,30 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Lock, CheckCircle, Circle, TreePine, TrendingUp, Target } from 'lucide-react';
+import { Lock, CheckCircle, Circle, TreePine, TrendingUp, Target, Loader2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { getCurrentUser, getSkillProgress } from '@/lib/auth';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function SkillTreePage() {
+  const { t } = useLanguage();
+  const [user, setUser] = useState<any>(null);
+  const [progress, setProgress] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const currentUser = await getCurrentUser();
+      setUser(currentUser);
+      if (currentUser) {
+        const skillProgress = await getSkillProgress(currentUser.id);
+        setProgress(skillProgress);
+      }
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
+
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -12,64 +33,83 @@ export default function SkillTreePage() {
 
   const skillPaths = [
     {
-      name: 'Push Path',
+      name: t.skillTree.pushPath,
       icon: '💪',
       skills: [
-        { name: 'Push-up', status: 'available', requirement: 'None' },
-        { name: 'Diamond Push-up', status: 'available', requirement: '10 Push-ups' },
-        { name: 'Pike Push-up', status: 'locked', requirement: '20 Push-ups' },
-        { name: 'Handstand', status: 'locked', requirement: '15 Pike Push-ups' },
-        { name: 'Handstand Push-up', status: 'locked', requirement: '30s Handstand Hold' },
-        { name: 'Planche Lean', status: 'locked', requirement: '10 Handstand Push-ups' },
-        { name: 'Tuck Planche', status: 'locked', requirement: '30s Planche Lean' },
-        { name: 'Full Planche', status: 'locked', requirement: '10s Tuck Planche' }
+        { name: 'Push-up', requirement: 'None' },
+        { name: 'Diamond Push-up', requirement: '10 Push-ups' },
+        { name: 'Pike Push-up', requirement: '20 Push-ups' },
+        { name: 'Handstand', requirement: '15 Pike Push-ups' },
+        { name: 'Handstand Push-up', requirement: '30s Handstand Hold' },
+        { name: 'Planche Lean', requirement: '10 Handstand Push-ups' },
+        { name: 'Tuck Planche', requirement: '30s Planche Lean' },
+        { name: 'Full Planche', requirement: '10s Tuck Planche' }
       ]
     },
     {
-      name: 'Pull Path',
+      name: t.skillTree.pullPath,
       icon: '🏋️',
       skills: [
-        { name: 'Australian Pull-up', status: 'available', requirement: 'None' },
-        { name: 'Pull-up', status: 'locked', requirement: '15 Australian Pull-ups' },
-        { name: 'Chin-up', status: 'locked', requirement: '10 Pull-ups' },
-        { name: 'Muscle-up', status: 'locked', requirement: '15 Pull-ups + 10 Dips' },
-        { name: 'Front Lever Tuck', status: 'locked', requirement: '20 Pull-ups' },
-        { name: 'Advanced Front Lever', status: 'locked', requirement: '15s Front Lever Tuck' },
-        { name: 'Full Front Lever', status: 'locked', requirement: '10s Adv. Front Lever' },
-        { name: 'One-Arm Pull-up', status: 'locked', requirement: '20 Pull-ups' }
+        { name: 'Australian Pull-up', requirement: 'None' },
+        { name: 'Pull-up', requirement: '15 Australian Pull-ups' },
+        { name: 'Chin-up', requirement: '10 Pull-ups' },
+        { name: 'Muscle-up', requirement: '15 Pull-ups + 10 Dips' },
+        { name: 'Front Lever Tuck', requirement: '20 Pull-ups' },
+        { name: 'Advanced Front Lever', requirement: '15s Front Lever Tuck' },
+        { name: 'Full Front Lever', requirement: '10s Adv. Front Lever' },
+        { name: 'One-Arm Pull-up', requirement: '20 Pull-ups' }
       ]
     },
     {
-      name: 'Core & Static Path',
+      name: t.skillTree.corePath,
       icon: '🎯',
       skills: [
-        { name: 'Plank', status: 'available', requirement: 'None' },
-        { name: 'L-Sit Progression', status: 'available', requirement: '30s Plank' },
-        { name: 'Tuck L-Sit', status: 'locked', requirement: '15s L-Sit Progression' },
-        { name: 'Full L-Sit', status: 'locked', requirement: '10s Tuck L-Sit' },
-        { name: 'V-Sit', status: 'locked', requirement: '15s Full L-Sit' },
-        { name: 'Manna', status: 'locked', requirement: '10s V-Sit' }
+        { name: 'Plank', requirement: 'None' },
+        { name: 'L-Sit Progression', requirement: '30s Plank' },
+        { name: 'Tuck L-Sit', requirement: '15s L-Sit Progression' },
+        { name: 'Full L-Sit', requirement: '10s Tuck L-Sit' },
+        { name: 'V-Sit', requirement: '15s Full L-Sit' },
+        { name: 'Manna', requirement: '10s V-Sit' }
       ]
     },
     {
-      name: 'Legs Path',
+      name: t.skillTree.legsPath,
       icon: '🦵',
       skills: [
-        { name: 'Squat', status: 'available', requirement: 'None' },
-        { name: 'Jump Squat', status: 'available', requirement: '20 Squats' },
-        { name: 'Pistol Squat Progression', status: 'locked', requirement: '30 Squats' },
-        { name: 'Assisted Pistol Squat', status: 'locked', requirement: '15 Jump Squats' },
-        { name: 'Pistol Squat', status: 'locked', requirement: '10 Assisted Pistol Squats (each leg)' },
-        { name: 'Shrimp Squat', status: 'locked', requirement: '10 Pistol Squats (each leg)' }
+        { name: 'Squat', requirement: 'None' },
+        { name: 'Jump Squat', requirement: '20 Squats' },
+        { name: 'Pistol Squat Progression', requirement: '30 Squats' },
+        { name: 'Assisted Pistol Squat', requirement: '15 Jump Squats' },
+        { name: 'Pistol Squat', requirement: '10 Assisted Pistol Squats (each leg)' },
+        { name: 'Shrimp Squat', requirement: '10 Pistol Squats (each leg)' }
       ]
     }
   ];
+
+  const getSkillStatus = (skillName: string) => {
+    const userSkill = progress.find(p => p.skill_name === skillName);
+    if (userSkill) return userSkill.status;
+    
+    // Default logic if no progress record exists
+    // Find path and index
+    for (const path of skillPaths) {
+      const index = path.skills.findIndex(s => s.name === skillName);
+      if (index !== -1) {
+        if (index === 0) return 'available';
+        const prevSkill = path.skills[index - 1];
+        const prevStatus = getSkillStatus(prevSkill.name);
+        return prevStatus === 'completed' ? 'available' : 'locked';
+      }
+    }
+    return 'locked';
+  };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'completed':
         return <CheckCircle className="w-5 h-5 text-success" />;
       case 'available':
+      case 'in-progress':
         return <Circle className="w-5 h-5 text-primary" />;
       case 'locked':
         return <Lock className="w-5 h-5 text-foreground/30" />;
@@ -83,154 +123,168 @@ export default function SkillTreePage() {
       case 'completed':
         return 'border-success/50 bg-success/5';
       case 'available':
-        return 'border-primary/50 bg-primary/5 hover:border-primary';
+      case 'in-progress':
+        return 'border-primary/50 bg-primary/5 hover:border-primary shadow-[0_0_15px_rgba(var(--primary-rgb),0.1)]';
       case 'locked':
-        return 'border-border bg-card/50 opacity-60';
+        return 'border-border bg-card/50 opacity-60 grayscale';
       default:
         return 'border-border bg-card';
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-[80vh] flex items-center justify-center">
+        <Loader2 className="w-12 h-12 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  const completedSkillsCount = progress.filter(p => p.status === 'completed').length;
+  const availableSkillsCount = skillPaths.reduce((acc, path) => {
+    return acc + path.skills.filter(s => getSkillStatus(s.name) === 'available').length;
+  }, 0);
+  const totalSkills = skillPaths.reduce((acc, path) => acc + path.skills.length, 0);
+  const completionPercentage = Math.round((completedSkillsCount / totalSkills) * 100);
+
   return (
-    <div className="container mx-auto px-4 py-12 space-y-16">
+    <div className="container mx-auto px-4 py-12 space-y-16 max-w-7xl">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-          Skill Tree
+        <h1 className="text-5xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+          {t.skillTree.title}
         </h1>
         <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
-          Track your calisthenics progression through interactive skill paths. Complete prerequisites to unlock new skills.
+          {t.skillTree.subtitle}
         </p>
       </motion.div>
 
-      {/* Info Box */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="p-6 bg-card border border-border rounded-xl"
-      >
-        <div className="flex items-start gap-4">
-          <TreePine className="w-8 h-8 text-primary flex-shrink-0 mt-1" />
-          <div>
-            <h3 className="text-xl font-bold mb-2">How the Skill Tree Works</h3>
-            <p className="text-foreground/70 mb-4">
-              The skill tree shows your progression path in calisthenics. Each skill has prerequisites that must be completed 
-              before you can attempt the next level. As you log workouts and achieve milestones, skills will unlock automatically.
-            </p>
-            <div className="flex flex-wrap gap-4 text-sm">
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-success" />
-                <span>Completed</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Circle className="w-4 h-4 text-primary" />
-                <span>Available to Train</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Lock className="w-4 h-4 text-foreground/30" />
-                <span>Locked - Complete Prerequisites</span>
-              </div>
-            </div>
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <motion.div
+          whileHover={{ y: -5 }}
+          className="p-6 bg-card border border-border rounded-2xl flex items-center gap-4"
+        >
+          <div className="w-12 h-12 rounded-xl bg-success/10 flex items-center justify-center text-success">
+            <CheckCircle className="w-6 h-6" />
           </div>
-        </div>
-      </motion.section>
+          <div>
+            <div className="text-2xl font-bold">{completedSkillsCount}/{totalSkills}</div>
+            <div className="text-sm text-foreground/60">{t.skillTree.skillsCompleted}</div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          whileHover={{ y: -5 }}
+          className="p-6 bg-card border border-border rounded-2xl flex items-center gap-4"
+        >
+          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+            <TrendingUp className="w-6 h-6" />
+          </div>
+          <div>
+            <div className="text-2xl font-bold">{availableSkillsCount}</div>
+            <div className="text-sm text-foreground/60">{t.skillTree.available}</div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          whileHover={{ y: -5 }}
+          className="p-6 bg-card border border-border rounded-2xl flex items-center gap-4"
+        >
+          <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center text-accent">
+            <Target className="w-6 h-6" />
+          </div>
+          <div>
+            <div className="text-2xl font-bold">{completionPercentage}%</div>
+            <div className="text-sm text-foreground/60">{t.skillTree.overallCompletion}</div>
+          </div>
+        </motion.div>
+      </div>
 
       {/* Skill Paths */}
-      <div className="space-y-12">
-        {skillPaths.map((path, index) => (
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-12">
+        {skillPaths.map((path, pathIndex) => (
           <motion.section
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            key={pathIndex}
+            initial={{ opacity: 0, x: pathIndex % 2 === 0 ? -20 : 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
+            className="space-y-8"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-3xl">{path.icon}</span>
+            <div className="flex items-center gap-4 mb-8">
+              <span className="text-4xl p-3 bg-card border border-border rounded-2xl shadow-lg">{path.icon}</span>
               <h2 className="text-3xl font-bold">{path.name}</h2>
             </div>
 
-            <div className="relative">
+            <div className="relative pl-8">
               {/* Connection Line */}
-              <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-secondary to-border" />
+              <div className="absolute left-4 top-4 bottom-4 w-1 bg-gradient-to-b from-primary via-secondary to-border rounded-full opacity-30" />
 
-              {/* Skills */}
-              <div className="space-y-4">
-                {path.skills.map((skill, skillIndex) => (
-                  <motion.div
-                    key={skillIndex}
-                    variants={fadeInUp}
-                    initial="initial"
-                    whileInView="animate"
-                    viewport={{ once: true }}
-                    transition={{ delay: skillIndex * 0.05 }}
-                    className={`relative p-4 border rounded-lg transition-all duration-200 ml-12 ${getStatusColor(skill.status)}`}
-                  >
-                    {/* Connection Dot */}
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-background border-2 border-primary" />
+              <div className="space-y-6">
+                {path.skills.map((skill, skillIndex) => {
+                  const status = getSkillStatus(skill.name);
+                  return (
+                    <motion.div
+                      key={skillIndex}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: skillIndex * 0.1 }}
+                      className={`relative group p-6 border-2 rounded-2xl transition-all duration-300 ${getStatusColor(status)}`}
+                    >
+                      {/* Node Dot */}
+                      <div className={`absolute -left-[22px] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 bg-background z-10 transition-colors ${
+                        status === 'completed' ? 'border-success bg-success' : 
+                        status === 'available' ? 'border-primary bg-primary animate-pulse' : 
+                        'border-border'
+                      }`} />
 
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start gap-3 flex-1">
-                        {getStatusIcon(skill.status)}
-                        <div>
-                          <h3 className="text-lg font-bold mb-1">{skill.name}</h3>
-                          <p className="text-sm text-foreground/60">
-                            <span className="font-medium">Requirement:</span> {skill.requirement}
-                          </p>
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-4">
+                          <div className={`p-2 rounded-lg ${
+                            status === 'completed' ? 'bg-success/10' : 
+                            status === 'available' ? 'bg-primary/10' : 
+                            'bg-muted'
+                          }`}>
+                            {getStatusIcon(status)}
+                          </div>
+                          <div>
+                            <h3 className="text-xl font-bold">{skill.name}</h3>
+                            <p className="text-sm text-foreground/50">
+                              <span className="font-medium">{t.profile.rank}:</span> {skill.requirement}
+                            </p>
+                          </div>
                         </div>
+                        
+                        {status === 'available' && (
+                          <button className="px-5 py-2 bg-primary hover:bg-primary-hover text-white rounded-xl text-sm font-bold transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-primary/20">
+                            {t.skillTree.startTraining}
+                          </button>
+                        )}
                       </div>
-                      {skill.status === 'available' && (
-                        <button className="px-4 py-2 bg-primary hover:bg-primary-hover text-white rounded-lg transition-all text-sm font-medium">
-                          Start Training
-                        </button>
-                      )}
-                      {skill.status === 'completed' && (
-                        <div className="px-4 py-2 bg-success/10 text-success rounded-lg text-sm font-medium">
-                          Completed ✓
-                        </div>
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
           </motion.section>
         ))}
       </div>
 
-      {/* Stats Section */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="p-8 bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-2xl"
-      >
-        <h2 className="text-3xl font-bold mb-6 text-center">Your Progress Overview</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="text-center p-6 bg-card rounded-xl">
-            <Target className="w-12 h-12 text-primary mx-auto mb-3" />
-            <div className="text-3xl font-bold mb-1">0/28</div>
-            <div className="text-foreground/70">Skills Completed</div>
-          </div>
-          <div className="text-center p-6 bg-card rounded-xl">
-            <TrendingUp className="w-12 h-12 text-secondary mx-auto mb-3" />
-            <div className="text-3xl font-bold mb-1">4</div>
-            <div className="text-foreground/70">Skills Available</div>
-          </div>
-          <div className="text-center p-6 bg-card rounded-xl">
-            <TreePine className="w-12 h-12 text-accent mx-auto mb-3" />
-            <div className="text-3xl font-bold mb-1">0%</div>
-            <div className="text-foreground/70">Overall Completion</div>
-          </div>
-        </div>
-        <p className="text-center text-foreground/60 mt-6 text-sm">
-          Sign in to track your progress and unlock skills
-        </p>
-      </motion.section>
+      {!user && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center p-12 bg-card/50 border border-border rounded-3xl backdrop-blur-sm"
+        >
+          <Lock className="w-12 h-12 mx-auto mb-4 text-foreground/20" />
+          <p className="text-xl text-foreground/70">{t.skillTree.signInToTrack}</p>
+        </motion.div>
+      )}
     </div>
   );
 }

@@ -63,6 +63,43 @@ export const exercises: Exercise[] = [
       target: '90° Push-up'
     }
   },
+  {
+    id: 'dips',
+    name: 'Dips',
+    category: 'horizontal-push',
+    difficulty: 'D',
+    learningTime: '2-4 weeks',
+    description: 'A powerful compound movement for the triceps, chest, and front deltoids. Dips are a key prerequisite for muscle-ups.',
+    musclesWorked: ['Triceps', 'Chest', 'Shoulders'],
+    highTensionAreas: ['Triceps', 'Lower Pectorals'],
+    steps: [
+      'Mount the parallel bars with arms locked',
+      'Lower your body by bending your elbows until they are at 90 degrees',
+      'Lean slightly forward to engage the chest',
+      'Push back up to the starting position'
+    ],
+    executionTips: [
+      'Keep your core tight and legs together',
+      'Don\'t flare your elbows excessively',
+      'Control the descent',
+      'Full lockout at the top'
+    ],
+    commonMistakes: [
+      'Not going deep enough',
+      'Shoulders shrugging (keep them depressed)',
+      'Excessive swinging',
+      'Locking elbows too aggressively'
+    ],
+    prerequisites: ['10-15 solid push-ups'],
+    mainExercises: ['Parallel Bar Dips'],
+    accessoryExercises: ['Bench Dips', 'Straight Bar Dips'],
+    progression: {
+      regression: 'Bench Dips',
+      current: 'Dips',
+      progression: 'Weighted Dips',
+      target: 'Muscle-up'
+    }
+  },
 
   // Vertical Push
   {
@@ -169,6 +206,36 @@ export const exercises: Exercise[] = [
   },
 
   // Core/Misc
+  {
+    id: 'hollow-body-hold',
+    name: 'Hollow Body Hold',
+    category: 'core-misc',
+    difficulty: 'F',
+    learningTime: '1-2 weeks',
+    description: 'The most fundamental core position in calisthenics and gymnastics. Teaches you to engage your core and protect your lower back.',
+    musclesWorked: ['Abs', 'Hip Flexors', 'Obliques'],
+    highTensionAreas: ['Rectus Abdominis'],
+    steps: [
+      'Lie flat on your back',
+      'Press your lower back into the floor (no gap)',
+      'Lift your legs and shoulders off the ground',
+      'Reach your arms overhead (or by your sides for easier version)'
+    ],
+    executionTips: [
+      'Lower back MUST remain flat against the floor',
+      'Point your toes',
+      'Keep your chin tucked slightly',
+      'Squeeze your glutes'
+    ],
+    mainExercises: ['Hollow Body Hold'],
+    accessoryExercises: ['Hollow Rocks', 'Dead Bugs'],
+    progression: {
+      regression: 'Bent-knee Hollow Hold',
+      current: 'Hollow Body Hold',
+      progression: 'L-Sit',
+      target: 'Planche'
+    }
+  },
   {
     id: 'l-sit',
     name: 'L-Sit',
@@ -384,6 +451,60 @@ export const exercises: Exercise[] = [
     mainExercises: ['Tuck Planche', 'Advanced Tuck PL', 'Straddle PL', 'Full Planche'],
     accessoryExercises: ['Planche Lean', 'Pseudo Planche Push-ups'],
     progression: { regression: 'Planche Lean', current: 'Planche', progression: 'Planche Push-up', target: 'One-Arm Planche' }
+  },
+  {
+    id: 'bulgarian-split-squat',
+    name: 'Bulgarian Split Squat',
+    category: 'legs',
+    difficulty: 'D',
+    learningTime: '1-2 weeks',
+    description: 'A superior single-leg exercise that builds massive leg strength and improves balance.',
+    musclesWorked: ['Quadriceps', 'Glutes', 'Hamstrings'],
+    highTensionAreas: ['Quadriceps'],
+    steps: [
+      'Place one foot behind you on an elevated surface',
+      'Lower your hips until your front thigh is parallel to the ground',
+      'Keep your front knee aligned with your foot',
+      'Push back up through your front heel'
+    ],
+    executionTips: [
+      'Keep your torso upright for more quad focus',
+      'Lean forward slightly for more glute focus',
+      'Maintain a stable core',
+      'Control the eccentric phase'
+    ],
+    mainExercises: ['Bulgarian Split Squat'],
+    accessoryExercises: ['Lunges', 'Step-ups'],
+    progression: {
+      regression: 'Lunges',
+      current: 'Bulgarian Split Squat',
+      progression: 'Pistol Squat',
+      target: 'Shrimp Squat'
+    }
+  },
+  {
+    id: 'side-plank',
+    name: 'Side Plank',
+    category: 'core-misc',
+    difficulty: 'F',
+    learningTime: '1 week',
+    description: 'Builds lateral core stability and strengthens the obliques.',
+    musclesWorked: ['Obliques', 'Abs', 'Shoulders'],
+    highTensionAreas: ['Internal and External Obliques'],
+    steps: [
+      'Lie on your side with your elbow directly under your shoulder',
+      'Lift your hips off the ground',
+      'Keep your body in a straight line',
+      'Hold the position'
+    ],
+    mainExercises: ['Side Plank'],
+    accessoryExercises: ['Side Plank Pulses', 'Side Plank with Leg Lift'],
+    progression: {
+      regression: 'Knee Side Plank',
+      current: 'Side Plank',
+      progression: 'Side Plank with Leg Lift',
+      target: 'Human Flag'
+    }
   }
 ];
 

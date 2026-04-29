@@ -87,6 +87,24 @@ export async function updateProfile(userId: string, updates: {
   return data;
 }
 
+export async function uploadAvatar(userId: string, file: File) {
+  const fileExt = file.name.split('.').pop();
+  const fileName = `${userId}-${Math.random()}.${fileExt}`;
+  const filePath = `${userId}/${fileName}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from('avatars')
+    .upload(filePath, file);
+
+  if (uploadError) throw uploadError;
+
+  const { data: { publicUrl } } = supabase.storage
+    .from('avatars')
+    .getPublicUrl(filePath);
+
+  return updateProfile(userId, { avatar_url: publicUrl });
+}
+
 export async function toggleFavoriteExercise(userId: string, exerciseId: string) {
   const { data: profile } = await supabase
     .from('profiles')

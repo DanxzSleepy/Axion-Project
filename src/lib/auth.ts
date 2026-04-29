@@ -43,13 +43,19 @@ export async function signOut() {
 
 // Get current user
 export async function getCurrentUser() {
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (error) {
+    // If getUser fails, try getSession as a fallback for the browser
+    const { data: { session } } = await supabase.auth.getSession();
+    return session?.user || null;
+  }
   return user;
 }
 
 // Get current session
 export async function getCurrentSession() {
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session }, error } = await supabase.auth.getSession();
+  if (error) return null;
   return session;
 }
 

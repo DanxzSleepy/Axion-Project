@@ -3,8 +3,10 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight, Zap, Target, Award, TrendingUp, Users, Clock } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Home() {
+  const { t } = useLanguage();
   const fadeInUp = {
     initial: { opacity: 0, y: 30 },
     animate: { opacity: 1, y: 0 },
@@ -38,7 +40,7 @@ export default function Home() {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            AXION
+            {t.home.heroTitle}
           </motion.h1>
           
           <motion.p 
@@ -47,7 +49,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
           >
-            Master Your Body. Master Your Mind. The Complete Calisthenics Platform.
+            {t.home.heroSubtitle}
           </motion.p>
 
           <motion.p 
@@ -56,7 +58,7 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
           >
-            What's your experience level?
+            {t.home.experienceLevel}
           </motion.p>
 
           <motion.div 
@@ -66,9 +68,9 @@ export default function Home() {
             animate="animate"
           >
             {[
-              { level: 'Beginner', desc: 'Just starting out', href: '/training?level=beginner' },
-              { level: 'Intermediate', desc: 'Some experience', href: '/training?level=intermediate' },
-              { level: 'Advanced', desc: 'Ready for mastery', href: '/training?level=advanced' }
+              { level: t.home.beginner, desc: t.home.beginnerDesc, href: '/training?level=beginner' },
+              { level: t.home.intermediate, desc: t.home.intermediateDesc, href: '/training?level=intermediate' },
+              { level: t.home.advanced, desc: t.home.advancedDesc, href: '/training?level=advanced' }
             ].map((item, index) => (
               <motion.div key={index} variants={fadeInUp}>
                 <Link
@@ -94,15 +96,12 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">What is Calisthenics?</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">{t.home.whatIsTitle}</h2>
             <p className="text-lg text-foreground/70 leading-relaxed mb-6">
-              Calisthenics is a form of physical training that uses only your body weight to build strength, 
-              flexibility, and endurance. From basic push-ups to incredible feats like the planche and front lever, 
-              calisthenics allows you to master your body anywhere, anytime.
+              {t.home.whatIsDesc1}
             </p>
             <p className="text-lg text-foreground/70 leading-relaxed">
-              No gym membership required. No expensive equipment needed. Just you, your determination, 
-              and the knowledge to progress safely and effectively.
+              {t.home.whatIsDesc2}
             </p>
           </motion.div>
         </div>
@@ -117,7 +116,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            Benefits of Calisthenics
+            {t.home.benefitsTitle}
           </motion.h2>
 
           <motion.div 

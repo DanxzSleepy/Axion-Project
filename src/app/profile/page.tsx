@@ -3,16 +3,18 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { getCurrentUser, getProfile, getUserStats } from '@/lib/auth';
-import { updateProfile, toggleFavoriteExercise, calculateLevel, calculateRank, getNextRank, getProgressToNextLevel, RANK_TIERS } from '@/lib/xp-system';
+import { updateProfile, uploadAvatar, toggleFavoriteExercise, calculateLevel, calculateRank, getNextRank, getProgressToNextLevel, RANK_TIERS } from '@/lib/xp-system';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { 
   Flame, Trophy, Calendar, Edit2, Save, X, Camera, Heart, 
-  BookMarked, Share2, Settings, LogIn, Star, TrendingUp, Target
+  BookMarked, Share2, Settings, LogIn, Star, TrendingUp, Target, Loader2
 } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function EnhancedProfilePage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [stats, setStats] = useState<any>(null);
@@ -24,6 +26,7 @@ export default function EnhancedProfilePage() {
     bio: ''
   });
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -75,12 +78,39 @@ export default function EnhancedProfilePage() {
     }
   };
 
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
+    // Basic validation
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload an image file');
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) { // 2MB limit
+      alert('File size must be less than 2MB');
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const updatedProfile = await uploadAvatar(user.id, file);
+      setProfile(updatedProfile);
+    } catch (error) {
+      console.error('Error uploading avatar:', error);
+      alert('Failed to upload avatar');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-[80vh] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-foreground/70">Loading profile...</p>
+          <p className="text-foreground/70">{t.common.loading}</p>
         </div>
       </div>
     );
@@ -94,7 +124,7 @@ export default function EnhancedProfilePage() {
           <h2 className="text-2xl font-bold mb-2">Please sign in</h2>
           <p className="text-foreground/70 mb-6">You need to be logged in to view your profile</p>
           <Link href="/login" className="px-6 py-3 bg-primary hover:bg-primary-hover text-white rounded-lg transition-all font-medium inline-block">
-            Sign In
+            {t.common.login}
           </Link>
         </div>
       </div>
@@ -130,16 +160,25 @@ export default function EnhancedProfilePage() {
         <div className="flex flex-col md:flex-row items-start gap-6">
           {/* Avatar */}
           <div className="relative group">
-            <div className="w-32 h-32 bg-primary/20 rounded-full flex items-center justify-center text-5xl font-bold text-primary">
-              {profile?.avatar_url ? (
-                <img src={profile.avatar_url} alt="Avatar" className="w-full h-full rounded-full object-cover" />
+            <div className="w-32 h-32 bg-primary/20 rounded-full flex items-center justify-center text-5xl font-bold text-primary overflow-hidden border-4 border-background shadow-xl">
+              {uploading ? (
+                <Loader2 className="w-8 h-8 animate-spin" />
+              ) : profile?.avatar_url ? (
+                <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
               ) : (
                 avatarLetter
               )}
             </div>
-            <button className="absolute bottom-0 right-0 p-2 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+            <label className="absolute bottom-0 right-0 p-2 bg-primary hover:bg-primary-hover rounded-full cursor-pointer shadow-lg transition-all transform hover:scale-110">
               <Camera className="w-4 h-4 text-white" />
-            </button>
+              <input 
+                type="file" 
+                className="hidden" 
+                accept="image/*"
+                onChange={handleAvatarUpload}
+                disabled={uploading}
+              />
+            </label>
           </div>
 
           {/* User Info */}
@@ -147,7 +186,7 @@ export default function EnhancedProfilePage() {
             {editMode ? (
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm text-foreground/60">Display Name</label>
+                  <label className="text-sm text-foreground/60">{t.profile.displayName}</label>
                   <input
                     type="text"
                     value={editForm.display_name}
@@ -156,7 +195,7 @@ export default function EnhancedProfilePage() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-foreground/60">Nickname</label>
+                  <label className="text-sm text-foreground/60">{t.profile.nickname}</label>
                   <input
                     type="text"
                     value={editForm.nickname}
@@ -165,7 +204,7 @@ export default function EnhancedProfilePage() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-foreground/60">Bio</label>
+                  <label className="text-sm text-foreground/60">{t.profile.bio}</label>
                   <textarea
                     value={editForm.bio}
                     onChange={(e) => setEditForm({ ...editForm, bio: e.target.value })}
@@ -179,13 +218,13 @@ export default function EnhancedProfilePage() {
                     disabled={saving}
                     className="px-6 py-2 bg-primary hover:bg-primary-hover text-white rounded-lg transition-all flex items-center gap-2 disabled:opacity-50"
                   >
-                    <Save className="w-4 h-4" /> {saving ? 'Saving...' : 'Save'}
+                    <Save className="w-4 h-4" /> {saving ? t.common.loading : t.common.save}
                   </button>
                   <button
                     onClick={() => setEditMode(false)}
                     className="px-6 py-2 border border-border hover:border-primary rounded-lg transition-all flex items-center gap-2"
                   >
-                    <X className="w-4 h-4" /> Cancel
+                    <X className="w-4 h-4" /> {t.common.cancel}
                   </button>
                 </div>
               </div>
@@ -210,7 +249,7 @@ export default function EnhancedProfilePage() {
                 <div className="flex flex-wrap gap-4">
                   {/* Rank Badge */}
                   <div className="px-4 py-2 bg-card rounded-lg">
-                    <div className="text-sm text-foreground/60">Rank</div>
+                    <div className="text-sm text-foreground/60">{t.profile.rank}</div>
                     <div className={`font-bold text-2xl bg-gradient-to-r ${rankTier?.color} bg-clip-text text-transparent`}>
                       {currentRank}
                     </div>
@@ -218,19 +257,19 @@ export default function EnhancedProfilePage() {
                   
                   {/* Level */}
                   <div className="px-4 py-2 bg-card rounded-lg">
-                    <div className="text-sm text-foreground/60">Level</div>
+                    <div className="text-sm text-foreground/60">{t.profile.level}</div>
                     <div className="font-bold text-2xl text-primary">{currentLevel}</div>
                   </div>
                   
                   {/* XP */}
                   <div className="px-4 py-2 bg-card rounded-lg">
-                    <div className="text-sm text-foreground/60">XP</div>
+                    <div className="text-sm text-foreground/60">{t.profile.xp}</div>
                     <div className="font-bold text-2xl">{currentXP.toLocaleString()}</div>
                   </div>
 
                   {/* Streak */}
                   <div className="px-4 py-2 bg-card rounded-lg">
-                    <div className="text-sm text-foreground/60">Streak</div>
+                    <div className="text-sm text-foreground/60">{t.profile.streak}</div>
                     <div className="font-bold text-2xl flex items-center gap-1">
                       <Flame className="w-5 h-5 text-orange-500" />
                       {stats.current_streak || 0}
@@ -281,25 +320,25 @@ export default function EnhancedProfilePage() {
         <div className="p-6 bg-card border border-border rounded-xl">
           <Calendar className="w-8 h-8 text-primary mb-3" />
           <div className="text-3xl font-bold mb-1">{stats.total_workouts || 0}</div>
-          <div className="text-sm text-foreground/60">Total Workouts</div>
+          <div className="text-sm text-foreground/60">{t.profile.totalWorkouts}</div>
         </div>
 
         <div className="p-6 bg-card border border-border rounded-xl">
           <Flame className="w-8 h-8 text-orange-500 mb-3" />
           <div className="text-3xl font-bold mb-1">{stats.longest_streak || 0}</div>
-          <div className="text-sm text-foreground/60">Longest Streak</div>
+          <div className="text-sm text-foreground/60">{t.profile.longestStreak}</div>
         </div>
 
         <div className="p-6 bg-card border border-border rounded-xl">
           <TrendingUp className="w-8 h-8 text-success mb-3" />
           <div className="text-3xl font-bold mb-1">{stats.consistency_percentage?.toFixed(1) || 0}%</div>
-          <div className="text-sm text-foreground/60">Consistency</div>
+          <div className="text-sm text-foreground/60">{t.profile.consistency}</div>
         </div>
 
         <div className="p-6 bg-card border border-border rounded-xl">
           <Trophy className="w-8 h-8 text-accent mb-3" />
           <div className="text-3xl font-bold mb-1">{stats.skills_unlocked || 0}</div>
-          <div className="text-sm text-foreground/60">Skills Unlocked</div>
+          <div className="text-sm text-foreground/60">{t.profile.skillsUnlocked}</div>
         </div>
       </motion.div>
 
@@ -314,7 +353,7 @@ export default function EnhancedProfilePage() {
         <div className="p-6 bg-card border border-border rounded-xl">
           <div className="flex items-center gap-2 mb-4">
             <Heart className="w-5 h-5 text-primary" />
-            <h3 className="text-xl font-bold">Favorite Exercises</h3>
+            <h3 className="text-xl font-bold">{t.profile.favoriteExercises}</h3>
           </div>
           {profile?.favorite_exercises && profile.favorite_exercises.length > 0 ? (
             <div className="space-y-2">
@@ -328,9 +367,9 @@ export default function EnhancedProfilePage() {
           ) : (
             <div className="text-center py-8 text-foreground/60">
               <Heart className="w-12 h-12 mx-auto mb-3 opacity-30" />
-              <p>No favorite exercises yet</p>
+              <p>{t.profile.noFavorites}</p>
               <Link href="/tutorials" className="text-primary hover:underline text-sm mt-2 inline-block">
-                Browse exercises →
+                {t.profile.browseExercises} →
               </Link>
             </div>
           )}
@@ -340,7 +379,7 @@ export default function EnhancedProfilePage() {
         <div className="p-6 bg-card border border-border rounded-xl">
           <div className="flex items-center gap-2 mb-4">
             <BookMarked className="w-5 h-5 text-primary" />
-            <h3 className="text-xl font-bold">Saved Guides</h3>
+            <h3 className="text-xl font-bold">{t.profile.savedGuides}</h3>
           </div>
           {profile?.saved_guides && profile.saved_guides.length > 0 ? (
             <div className="space-y-2">
@@ -358,9 +397,9 @@ export default function EnhancedProfilePage() {
           ) : (
             <div className="text-center py-8 text-foreground/60">
               <BookMarked className="w-12 h-12 mx-auto mb-3 opacity-30" />
-              <p>No saved guides yet</p>
+              <p>{t.profile.noSavedGuides}</p>
               <Link href="/training" className="text-primary hover:underline text-sm mt-2 inline-block">
-                Browse guides →
+                {t.profile.browseGuides} →
               </Link>
             </div>
           )}
@@ -374,14 +413,14 @@ export default function EnhancedProfilePage() {
         transition={{ delay: 0.4 }}
         className="p-6 bg-card border border-border rounded-xl"
       >
-        <h3 className="text-xl font-bold mb-4">Quick Actions</h3>
+        <h3 className="text-xl font-bold mb-4">{t.profile.quickActions}</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Link
             href="/training"
             className="p-4 bg-background border border-border rounded-lg hover:border-primary transition-all text-center"
           >
             <Target className="w-8 h-8 text-primary mx-auto mb-2" />
-            <div className="font-medium">Start Training</div>
+            <div className="font-medium">{t.common.training}</div>
           </Link>
           
           <Link
@@ -389,7 +428,7 @@ export default function EnhancedProfilePage() {
             className="p-4 bg-background border border-border rounded-lg hover:border-primary transition-all text-center"
           >
             <BookMarked className="w-8 h-8 text-secondary mx-auto mb-2" />
-            <div className="font-medium">Browse Exercises</div>
+            <div className="font-medium">{t.common.tutorials}</div>
           </Link>
           
           <Link
@@ -397,7 +436,7 @@ export default function EnhancedProfilePage() {
             className="p-4 bg-background border border-border rounded-lg hover:border-primary transition-all text-center"
           >
             <Trophy className="w-8 h-8 text-accent mx-auto mb-2" />
-            <div className="font-medium">View Skill Tree</div>
+            <div className="font-medium">{t.common.skillTree}</div>
           </Link>
         </div>
       </motion.div>
