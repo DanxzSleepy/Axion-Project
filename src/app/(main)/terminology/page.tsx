@@ -1,9 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Link from 'next/link';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function TerminologyPage() {
+  const { t } = useLanguage();
+  
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -11,134 +13,134 @@ export default function TerminologyPage() {
   };
 
   const abbreviations = [
-    { abbr: 'PU', term: 'Push-up' },
-    { abbr: 'PU', term: 'Pull-up' },
-    { abbr: 'HSPU', term: 'Handstand Push-up' },
-    { abbr: 'OAPU', term: 'One-Arm Push-up' },
-    { abbr: 'OAP/OAC', term: 'One-Arm Pull-up / One-Arm Chin-up' },
-    { abbr: 'MU', term: 'Muscle-up' },
-    { abbr: 'FL', term: 'Front Lever' },
-    { abbr: 'PL', term: 'Planche' },
-    { abbr: 'RIR', term: 'Reps In Reserve' },
-    { abbr: 'ROM', term: 'Range of Motion' },
-    { abbr: 'CNS', term: 'Central Nervous System' },
-    { abbr: 'PPT', term: 'Posterior Pelvic Tilt' }
+    { abbr: 'PU', term: t.terminology.abbreviations.PU_push },
+    { abbr: 'PU', term: t.terminology.abbreviations.PU_pull },
+    { abbr: 'HSPU', term: t.terminology.abbreviations.HSPU },
+    { abbr: 'OAPU', term: t.terminology.abbreviations.OAPU },
+    { abbr: 'OAP/OAC', term: t.terminology.abbreviations.OAPOAC },
+    { abbr: 'MU', term: t.terminology.abbreviations.MU },
+    { abbr: 'FL', term: t.terminology.abbreviations.FL },
+    { abbr: 'PL', term: t.terminology.abbreviations.PL },
+    { abbr: 'RIR', term: t.terminology.abbreviations.RIR },
+    { abbr: 'ROM', term: t.terminology.abbreviations.ROM },
+    { abbr: 'CNS', term: t.terminology.abbreviations.CNS },
+    { abbr: 'PPT', term: t.terminology.abbreviations.PPT }
   ];
 
   const terminology = [
     {
-      term: 'Sets x Repetitions',
-      definition: 'A set is a group of repetitions. A rep is a single execution of an exercise. For example: 3 x 5 push-ups means doing 5 push-ups, 3 times (3 sets).'
+      term: t.terminology.terms.setsReps,
+      definition: t.terminology.terms.setsRepsDef
     },
     {
-      term: 'Rest',
-      definition: 'Usually measured in minutes, rest is the time elapsed between sets to allow muscles and the body to rest/recover.'
+      term: t.terminology.terms.rest,
+      definition: t.terminology.terms.restDef
     },
     {
-      term: 'Volume',
-      definition: 'The total amount of exercise performed in a session. High volume means a large total number of reps/holds. Low volume means a small total number of reps/holds.'
+      term: t.terminology.terms.volume,
+      definition: t.terminology.terms.volumeDef
     },
     {
-      term: 'Hold',
-      definition: 'Used to refer to static exercises, "a hold" represents a single attempt to maintain a static position.'
+      term: t.terminology.terms.hold,
+      definition: t.terminology.terms.holdDef
     },
     {
-      term: 'Failure',
-      definition: 'The point at which you give up and physically cannot complete another rep or hold for one more second.'
+      term: t.terminology.terms.failure,
+      definition: t.terminology.terms.failureDef
     },
     {
-      term: 'Reps In Reserve (RIR)',
-      definition: 'The number of reps before failure; doing a set with 2 RIR means continuing until you feel you can do 2 more reps, but stopping instead of continuing.'
+      term: t.terminology.terms.rir,
+      definition: t.terminology.terms.rirDef
     },
     {
-      term: 'Static Hold/Exercise',
-      definition: 'Exercises that involve holding a certain position, such as the plank or front lever. Also known as isometric exercises. Most skills fall into this category.'
+      term: t.terminology.terms.static,
+      definition: t.terminology.terms.staticDef
     },
     {
-      term: 'Dynamic Exercise',
-      definition: 'Exercises that involve movement, such as pull-ups or push-ups. Freestyle calisthenics falls into this category.'
+      term: t.terminology.terms.dynamic,
+      definition: t.terminology.terms.dynamicDef
     },
     {
-      term: 'Progression',
-      definition: 'A harder version/variation of an exercise.'
+      term: t.terminology.terms.progression,
+      definition: t.terminology.terms.progressionDef
     },
     {
-      term: 'Regression',
-      definition: 'An easier version/variation of an exercise.'
+      term: t.terminology.terms.regression,
+      definition: t.terminology.terms.regressionDef
     },
     {
-      term: 'Eccentric',
-      definition: 'In the part of the exercise that involves stretching the target muscle, the muscle length increases.'
+      term: t.terminology.terms.eccentric,
+      definition: t.terminology.terms.eccentricDef
     },
     {
-      term: 'Concentric',
-      definition: 'In the part of the exercise where the target muscle contracts, the muscle length decreases.'
+      term: t.terminology.terms.concentric,
+      definition: t.terminology.terms.concentricDef
     },
     {
-      term: 'Range of Motion (ROM)',
-      definition: 'Refers to the range of motion an exercise goes through, usually at a joint. For example, a full push-up involves a full range, from chest to floor and back to starting position.'
+      term: t.terminology.terms.rom,
+      definition: t.terminology.terms.romDef
     },
     {
-      term: 'Central Nervous System (CNS)',
-      definition: 'The central nervous system includes the brain and spinal cord, and we use it for all movements and exercises.'
+      term: t.terminology.terms.cns,
+      definition: t.terminology.terms.cnsDef
     },
     {
-      term: 'Negatives',
-      definition: 'Controlled, slow descents during an exercise, focusing on the eccentric phase. For example, slowly lowering yourself during a pull-up.'
+      term: t.terminology.terms.negatives,
+      definition: t.terminology.terms.negativesDef
     },
     {
-      term: 'Posterior Pelvic Tilt (PPT)',
-      definition: 'A pelvic position where the pelvis tilts backward, flattening the lower back and squeezing the glutes. This pelvic position is considered optimal and is most used in planche posture.'
+      term: t.terminology.terms.ppt,
+      definition: t.terminology.terms.pptDef
     }
   ];
 
   const difficultyRanks = [
     {
       rank: 'F',
-      title: 'Baseline',
-      description: 'Exercises at this level are accessible to almost everyone and serve as a starting point for people beginning calisthenics from absolute zero (no prior athletic experience).',
+      title: t.terminology.rankBaseline,
+      description: t.terminology.rankBaselineDesc,
       examples: 'Push-ups, Australian Pull-ups',
       color: 'from-green-500 to-green-600'
     },
     {
       rank: 'D',
-      title: 'Beginner Level',
-      description: 'Exercises at this level can be completed in 1-2 months and serve as fundamental prerequisites before skill training can begin.',
+      title: t.terminology.rankBeginner,
+      description: t.terminology.rankBeginnerDesc,
       examples: 'Pull-ups, Dips, Elbow Lever, L-sit, Frog Stand',
       color: 'from-blue-500 to-blue-600'
     },
     {
       rank: 'C',
-      title: 'Advanced Beginner',
-      description: 'Exercises at this level can be completed in 2-6 months and serve as basic progression to advanced skills.',
+      title: t.terminology.rankAdvBeginner,
+      description: t.terminology.rankAdvBeginnerDesc,
       examples: 'Pike PU, Tuck FL, Handstand',
       color: 'from-yellow-500 to-yellow-600'
     },
     {
       rank: 'B',
-      title: 'Lower Intermediate',
-      description: 'Exercises at this level can be completed in 6-15 months and serve as intermediate progressions of advanced skills.',
+      title: t.terminology.rankLowInt,
+      description: t.terminology.rankLowIntDesc,
       examples: 'Tuck PL, HSPU, Adv. Tuck PL, Adv. Tuck FL, MU, V-sit, OAPU',
       color: 'from-orange-500 to-orange-600'
     },
     {
       rank: 'A',
-      title: 'Advanced Intermediate',
-      description: 'Exercises at this level can be completed in 15-36 months and represent the final progression to advanced skills or the final skill itself.',
+      title: t.terminology.rankAdvInt,
+      description: t.terminology.rankAdvIntDesc,
       examples: 'Str. PL, Str. FL, Full FL, 90° PU, OAP/OAC, Manna',
       color: 'from-red-500 to-red-600'
     },
     {
       rank: 'S',
-      title: 'Advanced',
-      description: 'Exercises at this level are usually achieved in 3-5 years and require constant effort and training. These are many people\'s dream skills.',
+      title: t.terminology.rankAdvanced,
+      description: t.terminology.rankAdvancedDesc,
       examples: 'Full PL, Touch FL',
       color: 'from-purple-500 to-purple-600'
     },
     {
       rank: 'SS',
-      title: 'Elite',
-      description: 'Exercises at this level can take up to 5 years or more to complete, depending on genetics and effort. People who can perform these skills have truly excelled.',
+      title: t.terminology.rankElite,
+      description: t.terminology.rankEliteDesc,
       examples: 'Dragon PL, Maltese, Full PL PUs, Iron Cross, Inverted Cross',
       color: 'from-pink-500 to-pink-600'
     }
@@ -153,11 +155,10 @@ export default function TerminologyPage() {
         className="text-center"
       >
         <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-          Terminology
+          {t.terminology.title}
         </h1>
         <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
-          Calisthenics is a relatively niche sport compared to many others, so there may be terms you're not familiar with. 
-          To use the site most effectively, take a quick look at the content here and feel free to come back if needed.
+          {t.terminology.subtitle}
         </p>
       </motion.div>
 
@@ -167,7 +168,7 @@ export default function TerminologyPage() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
       >
-        <h2 className="text-3xl font-bold mb-6">Skill Abbreviations</h2>
+        <h2 className="text-3xl font-bold mb-6">{t.terminology.abbreviationsTitle}</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {abbreviations.map((item, index) => (
             <motion.div
@@ -188,7 +189,7 @@ export default function TerminologyPage() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
       >
-        <h2 className="text-3xl font-bold mb-6">Terminology</h2>
+        <h2 className="text-3xl font-bold mb-6">{t.common.terminology}</h2>
         <div className="space-y-4">
           {terminology.map((item, index) => (
             <motion.div
@@ -203,41 +204,38 @@ export default function TerminologyPage() {
         </div>
       </motion.section>
 
-      {/* Difficulty Ranking System */}
+      {/* Difficulty Rankings */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
       >
-        <h2 className="text-3xl font-bold mb-6">Skill Difficulty Table</h2>
+        <h2 className="text-3xl font-bold mb-4">{t.terminology.difficultyTitle}</h2>
+        <p className="text-foreground/70 mb-8 max-w-2xl">
+          {t.terminology.difficultySubtitle}
+        </p>
+        
         <div className="space-y-6">
-          {difficultyRanks.map((rank, index) => (
+          {difficultyRanks.map((item, index) => (
             <motion.div
               key={index}
               variants={fadeInUp}
-              className="p-6 bg-card border border-border rounded-lg"
+              className="p-8 bg-card border border-border rounded-2xl relative overflow-hidden group"
             >
-              <div className="flex items-center gap-4 mb-4">
-                <div className={`text-5xl font-bold bg-gradient-to-r ${rank.color} bg-clip-text text-transparent`}>
-                  {rank.rank}
+              {/* Rank Badge Background */}
+              <div className={`absolute -right-4 -top-4 w-32 h-32 bg-gradient-to-br ${item.color} opacity-10 rounded-full blur-3xl group-hover:opacity-20 transition-opacity`} />
+              
+              <div className="flex flex-col md:flex-row gap-6 items-start">
+                <div className={`flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white text-3xl font-bold shadow-lg`}>
+                  {item.rank}
                 </div>
-                <div>
-                  <h3 className="text-2xl font-bold">{rank.title}</h3>
-                </div>
-              </div>
-              <p className="text-foreground/70 mb-4">{rank.description}</p>
-              <div className="p-3 bg-background rounded-lg">
-                <span className="text-sm text-foreground/60">Skills in this category: </span>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {rank.examples.split(', ').map((skill, i) => (
-                    <Link 
-                      key={i}
-                      href="/tutorials"
-                      className="text-sm text-primary hover:text-primary-hover font-medium hover:underline"
-                    >
-                      {skill.trim()}
-                    </Link>
-                  ))}
+                <div className="flex-1">
+                  <h3 className="text-2xl font-bold mb-2">{item.title}</h3>
+                  <p className="text-foreground/70 mb-4 leading-relaxed">{item.description}</p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-bold text-primary uppercase tracking-wider">Examples:</span>
+                    <span className="text-sm text-foreground/60">{item.examples}</span>
+                  </div>
                 </div>
               </div>
             </motion.div>

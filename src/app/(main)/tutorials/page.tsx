@@ -5,8 +5,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { exercises, categoryLabels, categoryDescriptions } from '@/lib/exercises';
 import { Exercise, ExerciseCategory } from '@/types';
 import { ChevronDown, ChevronUp, Clock, TrendingUp, ArrowRight } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function TutorialsPage() {
+  const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<ExerciseCategory | 'all'>('all');
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
 
@@ -38,10 +40,10 @@ export default function TutorialsPage() {
         className="text-center mb-12"
       >
         <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-          Tutorials & Skills
+          {t.tutorials.title}
         </h1>
         <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
-          Master every calisthenics movement with detailed guides, progressions, and techniques
+          {t.tutorials.subtitle}
         </p>
       </motion.div>
 
@@ -57,7 +59,7 @@ export default function TutorialsPage() {
                 : 'bg-card hover:bg-card-hover text-foreground/70'
             }`}
           >
-            {categoryLabels[cat] || 'All'}
+            {t.tutorials.categories[cat]}
           </button>
         ))}
       </div>
@@ -69,7 +71,7 @@ export default function TutorialsPage() {
           animate={{ opacity: 1 }}
           className="mb-8 p-4 bg-card border border-border rounded-lg"
         >
-          <p className="text-foreground/70">{categoryDescriptions[selectedCategory]}</p>
+          <p className="text-foreground/70">{t.tutorials.categoryDescriptions[selectedCategory]}</p>
         </motion.div>
       )}
 
@@ -97,7 +99,7 @@ export default function TutorialsPage() {
             </div>
             <p className="text-foreground/70 text-sm mb-4">{exercise.description}</p>
             <div className="flex items-center text-primary text-sm font-medium">
-              View Details <ArrowRight className="w-4 h-4 ml-1" />
+              {t.tutorials.viewDetails} <ArrowRight className="w-4 h-4 ml-1" />
             </div>
           </motion.div>
         ))}
@@ -126,7 +128,7 @@ export default function TutorialsPage() {
                   <h2 className="text-3xl font-bold mb-2">{selectedExercise.name}</h2>
                   <div className="flex items-center gap-4">
                     <span className={`text-3xl font-bold ${getDifficultyColor(selectedExercise.difficulty)}`}>
-                      Difficulty: {selectedExercise.difficulty}
+                      {t.tutorials.difficulty}: {selectedExercise.difficulty}
                     </span>
                     <div className="flex items-center gap-2 text-foreground/60">
                       <Clock className="w-4 h-4" />
@@ -146,13 +148,13 @@ export default function TutorialsPage() {
               <div className="p-6 space-y-6">
                 {/* Overview */}
                 <div>
-                  <h3 className="text-xl font-bold mb-2 text-primary">Overview</h3>
+                  <h3 className="text-xl font-bold mb-2 text-primary">{t.tutorials.overview}</h3>
                   <p className="text-foreground/70">{selectedExercise.description}</p>
                 </div>
 
                 {/* Muscles Worked */}
                 <div>
-                  <h3 className="text-xl font-bold mb-2 text-primary">Muscles Worked</h3>
+                  <h3 className="text-xl font-bold mb-2 text-primary">{t.tutorials.musclesWorked}</h3>
                   <div className="flex flex-wrap gap-2">
                     {selectedExercise.musclesWorked.map((muscle, i) => (
                       <span key={i} className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
@@ -164,7 +166,7 @@ export default function TutorialsPage() {
 
                 {/* Step by Step */}
                 <div>
-                  <h3 className="text-xl font-bold mb-2 text-primary">Step by Step</h3>
+                  <h3 className="text-xl font-bold mb-2 text-primary">{t.tutorials.stepByStep}</h3>
                   <ol className="space-y-2">
                     {selectedExercise.steps.map((step, i) => (
                       <li key={i} className="flex gap-3">
@@ -179,7 +181,7 @@ export default function TutorialsPage() {
 
                 {/* Progression Table */}
                 <div>
-                  <h3 className="text-xl font-bold mb-2 text-primary">Progression Path</h3>
+                  <h3 className="text-xl font-bold mb-2 text-primary">{t.tutorials.progressionPath}</h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {[
                       { label: 'Regression', value: selectedExercise.progression.regression },
@@ -194,14 +196,14 @@ export default function TutorialsPage() {
                     ))}
                   </div>
                   <p className="text-xs text-foreground/50 mt-2">
-                    Learn how to use the progression table in our <a href="/how-to-use" className="text-primary hover:underline">site guide</a>.
+                    {t.tutorials.progressionGuideLink} <a href="/how-to-use" className="text-primary hover:underline">{t.tutorials.siteGuide}</a>.
                   </p>
                 </div>
 
                 {/* Exercises */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <h4 className="font-bold mb-2 text-primary">Main Exercises</h4>
+                    <h4 className="font-bold mb-2 text-primary">{t.tutorials.mainExercises}</h4>
                     <ul className="space-y-1">
                       {selectedExercise.mainExercises.map((ex, i) => (
                         <li key={i} className="text-foreground/70 text-sm">• {ex}</li>
@@ -209,7 +211,7 @@ export default function TutorialsPage() {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-bold mb-2 text-primary">Accessory Exercises</h4>
+                    <h4 className="font-bold mb-2 text-primary">{t.tutorials.accessoryExercises}</h4>
                     <ul className="space-y-1">
                       {selectedExercise.accessoryExercises.map((ex, i) => (
                         <li key={i} className="text-foreground/70 text-sm">• {ex}</li>
@@ -225,10 +227,10 @@ export default function TutorialsPage() {
                   onClick={() => setSelectedExercise(null)}
                   className="flex-1 px-6 py-3 border border-border hover:border-primary rounded-lg transition-all"
                 >
-                  Back to Tutorials
+                  {t.tutorials.backToTutorials}
                 </button>
                 <button className="flex-1 px-6 py-3 bg-primary hover:bg-primary-hover text-white rounded-lg transition-all font-medium">
-                  Add to Training Plan
+                  {t.tutorials.addToPlan}
                 </button>
               </div>
             </motion.div>

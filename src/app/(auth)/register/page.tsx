@@ -6,9 +6,11 @@ import { useState } from 'react';
 import { Dumbbell, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 import { signUp, signInWithGoogle } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
@@ -25,12 +27,12 @@ export default function RegisterPage() {
     setError('');
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError(t.auth.errors.passwordsDoNotMatch);
       return;
     }
 
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters');
+      setError(t.auth.errors.passwordTooShort);
       return;
     }
 
@@ -39,10 +41,10 @@ export default function RegisterPage() {
     try {
       await signUp(formData.email, formData.password, formData.username);
       setError('');
-      alert('Account created! Please check your email to verify your account.');
+      alert(t.auth.alerts.accountCreated);
       router.push('/login');
     } catch (err: any) {
-      setError(err.message || 'Failed to create account');
+      setError(err.message || t.auth.errors.signUpFailed);
     } finally {
       setLoading(false);
     }
@@ -53,7 +55,7 @@ export default function RegisterPage() {
     try {
       await signInWithGoogle();
     } catch (err: any) {
-      setError(err.message || 'Failed to sign in with Google');
+      setError(err.message || t.auth.errors.googleFailed);
       setGoogleLoading(false);
     }
   };
@@ -72,15 +74,15 @@ export default function RegisterPage() {
               AXION
             </span>
           </Link>
-          <h1 className="text-3xl font-bold mb-2">Create Account</h1>
-          <p className="text-foreground/70">Start your calisthenics journey today</p>
+          <h1 className="text-3xl font-bold mb-2">{t.auth.createAccount}</h1>
+          <p className="text-foreground/70">{t.auth.signUpDesc}</p>
         </div>
 
         <div className="p-8 bg-card border border-border rounded-2xl">
-          <form onSubmit={handleRegister} className="space-y-5">
+          <form onSubmit={handleRegister} className="space-y-4">
             <div>
               <label htmlFor="username" className="block text-sm font-medium mb-2">
-                Username
+                {t.auth.usernameLabel}
               </label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/40" />
@@ -90,7 +92,7 @@ export default function RegisterPage() {
                   value={formData.username}
                   onChange={(e) => setFormData({...formData, username: e.target.value})}
                   className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-lg focus:border-primary focus:outline-none transition-colors"
-                  placeholder="johndoe"
+                  placeholder={t.auth.usernamePlaceholder}
                   required
                 />
               </div>
@@ -98,7 +100,7 @@ export default function RegisterPage() {
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium mb-2">
-                Email
+                {t.auth.emailLabel}
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/40" />
@@ -108,7 +110,7 @@ export default function RegisterPage() {
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
                   className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-lg focus:border-primary focus:outline-none transition-colors"
-                  placeholder="your@email.com"
+                  placeholder={t.auth.emailPlaceholder}
                   required
                 />
               </div>
@@ -116,7 +118,7 @@ export default function RegisterPage() {
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium mb-2">
-                Password
+                {t.auth.passwordLabel}
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/40" />
@@ -126,7 +128,7 @@ export default function RegisterPage() {
                   value={formData.password}
                   onChange={(e) => setFormData({...formData, password: e.target.value})}
                   className="w-full pl-10 pr-12 py-3 bg-background border border-border rounded-lg focus:border-primary focus:outline-none transition-colors"
-                  placeholder="••••••••"
+                  placeholder={t.auth.passwordPlaceholder}
                   required
                 />
                 <button
@@ -141,7 +143,7 @@ export default function RegisterPage() {
 
             <div>
               <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2">
-                Confirm Password
+                {t.auth.confirmPasswordLabel}
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/40" />
@@ -151,7 +153,7 @@ export default function RegisterPage() {
                   value={formData.confirmPassword}
                   onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
                   className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-lg focus:border-primary focus:outline-none transition-colors"
-                  placeholder="••••••••"
+                  placeholder={t.auth.passwordPlaceholder}
                   required
                 />
               </div>
@@ -168,7 +170,7 @@ export default function RegisterPage() {
               disabled={loading}
               className="w-full py-3 bg-primary hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all font-medium"
             >
-              {loading ? 'Creating Account...' : 'Create Account'}
+              {loading ? t.auth.creatingAccount : t.auth.createAccount}
             </button>
           </form>
 
@@ -178,7 +180,7 @@ export default function RegisterPage() {
                 <div className="w-full border-t border-border"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-card text-foreground/60">Or continue with</span>
+                <span className="px-2 bg-card text-foreground/60">{t.auth.orContinueWith}</span>
               </div>
             </div>
 
@@ -194,15 +196,15 @@ export default function RegisterPage() {
                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
               </svg>
-              {googleLoading ? 'Connecting...' : 'Google'}
+              {googleLoading ? t.auth.googleConnecting : t.auth.googleButton}
             </button>
           </div>
 
           <div className="mt-6 text-center">
             <p className="text-foreground/70">
-              Already have an account?{' '}
+              {t.auth.haveAccount}{' '}
               <Link href="/login" className="text-primary hover:underline font-medium">
-                Sign in
+                {t.auth.signInLink}
               </Link>
             </p>
           </div>

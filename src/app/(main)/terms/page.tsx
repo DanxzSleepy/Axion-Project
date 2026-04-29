@@ -1,16 +1,19 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function TermsPage() {
+  const { t } = useLanguage();
+  
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <h1 className="text-5xl font-bold mb-8">Terms & Conditions</h1>
-        <p className="text-foreground/60 mb-8">Last updated: April 22, 2026</p>
+        <h1 className="text-5xl font-bold mb-8">{t.terms.title}</h1>
+        <p className="text-foreground/60 mb-8">{t.terms.lastUpdated}: April 22, 2026</p>
 
         <div className="space-y-8">
           <section>

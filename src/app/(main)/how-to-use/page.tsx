@@ -3,17 +3,20 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { BookOpen, Trophy, Target, BarChart3, ArrowRight, CheckCircle } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function HowToUsePage() {
+  const { t } = useLanguage();
+
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <h1 className="text-5xl font-bold mb-4">How to Use AXION</h1>
+        <h1 className="text-5xl font-bold mb-4">{t.howToUse.title}</h1>
         <p className="text-xl text-foreground/70 mb-12">
-          Your complete guide to getting the most out of the platform
+          {t.howToUse.subtitle}
         </p>
 
         {/* Getting Started */}
@@ -23,29 +26,29 @@ export default function HowToUsePage() {
           viewport={{ once: true }}
           className="mb-16"
         >
-          <h2 className="text-3xl font-bold mb-6">Getting Started</h2>
+          <h2 className="text-3xl font-bold mb-6">{t.howToUse.gettingStarted}</h2>
           <div className="space-y-6">
             {[
               {
                 step: 1,
-                title: 'Create Your Account',
-                description: 'Sign up with email or Google. Choose your fitness level: Beginner, Experienced, or Advanced.',
+                title: t.howToUse.steps.createAccount,
+                description: t.howToUse.steps.createAccountDesc,
                 link: '/register',
-                linkText: 'Create Account'
+                linkText: t.common.register
               },
               {
                 step: 2,
-                title: 'Set Up Your Profile',
-                description: 'Add your avatar, bio, and training goals. This helps us personalize your experience.',
+                title: t.howToUse.steps.setupProfile,
+                description: t.howToUse.steps.setupProfileDesc,
                 link: '/profile',
-                linkText: 'View Profile'
+                linkText: t.common.profile
               },
               {
                 step: 3,
-                title: 'Explore the Platform',
-                description: 'Browse tutorials, training guides, and the skill tree to understand what AXION offers.',
+                title: t.howToUse.steps.explore,
+                description: t.howToUse.steps.exploreDesc,
                 link: '/tutorials',
-                linkText: 'Browse Tutorials'
+                linkText: t.common.tutorials
               }
             ].map((item) => (
               <div key={item.step} className="flex gap-6 p-6 bg-card border border-border rounded-xl">
@@ -71,32 +74,32 @@ export default function HowToUsePage() {
           viewport={{ once: true }}
           className="mb-16"
         >
-          <h2 className="text-3xl font-bold mb-8">Platform Features</h2>
+          <h2 className="text-3xl font-bold mb-8">{t.howToUse.platformFeatures}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
               {
                 icon: <BookOpen className="w-8 h-8" />,
-                title: 'Tutorials & Skills',
-                description: 'Browse exercises by category (push, pull, legs, core). Each exercise includes difficulty rating, learning time, muscle groups, and step-by-step progressions.',
-                tip: 'Use the difficulty filter to find exercises appropriate for your level.'
+                title: t.howToUse.features.tutorials,
+                description: t.howToUse.features.tutorialsDesc,
+                tip: t.howToUse.features.tutorialsTip
               },
               {
                 icon: <Target className="w-8 h-8" />,
-                title: 'Training Guides',
-                description: 'Comprehensive guides covering fundamentals, workout structure, nutrition, and skill development.',
-                tip: 'Start with "Calisthenics Fundamentals" if you\'re new to bodyweight training.'
+                title: t.howToUse.features.guides,
+                description: t.howToUse.features.guidesDesc,
+                tip: t.howToUse.features.guidesTip
               },
               {
                 icon: <Trophy className="w-8 h-8" />,
-                title: 'Skill Tree',
-                description: 'Visual progression paths showing prerequisites and advancement routes for major skills like Planche, Front Lever, and Handstand.',
-                tip: 'Complete prerequisites before attempting advanced skills to avoid injury.'
+                title: t.howToUse.features.skillTree,
+                description: t.howToUse.features.skillTreeDesc,
+                tip: t.howToUse.features.skillTreeTip
               },
               {
                 icon: <BarChart3 className="w-8 h-8" />,
-                title: 'Progress Tracking',
-                description: 'Log workouts, track exercises, record sets/reps, and monitor your consistency streak.',
-                tip: 'Log every workout to maintain your streak and see long-term progress.'
+                title: t.howToUse.features.tracking,
+                description: t.howToUse.features.trackingDesc,
+                tip: t.howToUse.features.trackingTip
               }
             ].map((feature, index) => (
               <motion.div
@@ -112,7 +115,7 @@ export default function HowToUsePage() {
                 <p className="text-foreground/70 text-sm mb-4">{feature.description}</p>
                 <div className="p-3 bg-primary/5 border border-primary/20 rounded-lg">
                   <p className="text-xs text-primary">
-                    <strong>Pro Tip:</strong> {feature.tip}
+                    <strong>{t.common.proTip}:</strong> {feature.tip}
                   </p>
                 </div>
               </motion.div>
@@ -127,19 +130,19 @@ export default function HowToUsePage() {
           viewport={{ once: true }}
           className="mb-16 p-8 bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-2xl"
         >
-          <h2 className="text-3xl font-bold mb-6">Understanding Difficulty Rankings</h2>
+          <h2 className="text-3xl font-bold mb-6">{t.howToUse.difficultyGuide}</h2>
           <p className="text-foreground/70 mb-6">
-            AXION uses a ranking system from F to SS to indicate exercise difficulty:
+            {t.howToUse.difficultyDesc}
           </p>
           <div className="space-y-3">
             {[
-              { rank: 'F', label: 'Absolute Beginner', desc: 'First movements, building foundational strength' },
-              { rank: 'D', label: 'Beginner', desc: 'Basic exercises, developing body awareness' },
-              { rank: 'C', label: 'Intermediate', desc: 'Standard calisthenics movements' },
-              { rank: 'B', label: 'Advanced', desc: 'Complex movements requiring dedicated training' },
-              { rank: 'A', label: 'Expert', desc: 'Elite-level skills, months/years of practice' },
-              { rank: 'S', label: 'Master', desc: 'Rare achievements, exceptional strength' },
-              { rank: 'SS', label: 'Grandmaster', desc: 'Near-impossible feats, years of dedication' }
+              { rank: 'F', label: t.howToUse.ranks.F, desc: t.howToUse.ranks.FDesc },
+              { rank: 'D', label: t.howToUse.ranks.D, desc: t.howToUse.ranks.DDesc },
+              { rank: 'C', label: t.howToUse.ranks.C, desc: t.howToUse.ranks.CDesc },
+              { rank: 'B', label: t.howToUse.ranks.B, desc: t.howToUse.ranks.BDesc },
+              { rank: 'A', label: t.howToUse.ranks.A, desc: t.howToUse.ranks.ADesc },
+              { rank: 'S', label: t.howToUse.ranks.S, desc: t.howToUse.ranks.SDesc },
+              { rank: 'SS', label: t.howToUse.ranks.SS, desc: t.howToUse.ranks.SSDesc }
             ].map((item, index) => (
               <div key={index} className="flex items-center gap-4 p-3 bg-card/50 rounded-lg">
                 <span className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center font-bold text-primary">
@@ -156,7 +159,7 @@ export default function HowToUsePage() {
             href="/terminology"
             className="mt-6 inline-flex items-center gap-2 text-primary hover:underline"
           >
-            View Full Terminology Guide <ArrowRight className="w-4 h-4" />
+            {t.terminology.title} <ArrowRight className="w-4 h-4" />
           </Link>
         </motion.section>
 
@@ -167,18 +170,9 @@ export default function HowToUsePage() {
           viewport={{ once: true }}
           className="mb-16"
         >
-          <h2 className="text-3xl font-bold mb-6">Best Practices</h2>
+          <h2 className="text-3xl font-bold mb-6">{t.howToUse.bestPractices}</h2>
           <div className="space-y-4">
-            {[
-              'Always warm up before training (5-10 minutes)',
-              'Focus on form over reps or speed',
-              'Progress gradually - don\'t skip progression steps',
-              'Rest 48 hours between training the same muscle groups',
-              'Log your workouts consistently to track progress',
-              'Listen to your body - rest when needed',
-              'Set realistic goals and celebrate small wins',
-              'Stay consistent - results come from regular practice'
-            ].map((practice, index) => (
+            {t.howToUse.practices.map((practice, index) => (
               <div key={index} className="flex items-start gap-3 p-4 bg-card border border-border rounded-lg">
                 <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
                 <span className="text-foreground/80">{practice}</span>
@@ -194,22 +188,22 @@ export default function HowToUsePage() {
           viewport={{ once: true }}
           className="text-center p-8 bg-card border border-border rounded-2xl"
         >
-          <h2 className="text-3xl font-bold mb-4">Still Have Questions?</h2>
+          <h2 className="text-3xl font-bold mb-4">{t.howToUse.stillHaveQuestions}</h2>
           <p className="text-foreground/70 mb-6">
-            We're here to help! Check our other resources or contact us directly.
+            {t.howToUse.questionsDesc}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/terminology"
-              className="px-6 py-3 bg-primary hover:bg-primary-hover text-white rounded-lg transition-all inline-flex items-center gap-2"
-            >
-              Terminology Guide
-            </Link>
+          <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/feedback"
-              className="px-6 py-3 border border-border hover:border-primary rounded-lg transition-all inline-flex items-center gap-2"
+              className="px-6 py-3 bg-primary hover:bg-primary-hover text-white rounded-lg transition-all font-medium"
             >
-              Contact Support
+              {t.footer.feedback}
+            </Link>
+            <Link
+              href="/about"
+              className="px-6 py-3 border border-border hover:border-primary rounded-lg transition-all font-medium"
+            >
+              {t.footer.aboutUs}
             </Link>
           </div>
         </motion.section>

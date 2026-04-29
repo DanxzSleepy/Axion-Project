@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Clock, BookOpen, CheckCircle } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Section {
   title: string;
@@ -32,6 +33,8 @@ export default function TrainingGuideLayout({
   previousGuide,
   previousGuideTitle
 }: TrainingGuideLayoutProps) {
+  const { t } = useLanguage();
+  
   // Simple markdown renderer for bold text
   const renderMarkdown = (content: string) => {
     const lines = content.split('\n');
@@ -58,7 +61,7 @@ export default function TrainingGuideLayout({
         className="inline-flex items-center gap-2 text-foreground/70 hover:text-primary transition-colors mb-8"
       >
         <ArrowLeft className="w-4 h-4" />
-        Back to Training Guides
+        {t.guide.backToGuides}
       </Link>
 
       {/* Header */}
@@ -106,7 +109,7 @@ export default function TrainingGuideLayout({
       >
         <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
           <CheckCircle className="w-5 h-5 text-success" />
-          Key Takeaways
+          {t.guide.keyTakeaways}
         </h3>
         <ul className="space-y-3">
           {keyTakeaways.map((takeaway, index) => (
@@ -145,7 +148,7 @@ export default function TrainingGuideLayout({
             href="/training"
             className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium"
           >
-            Back to All Guides
+            {t.guide.backToAllGuides}
             <ArrowRight className="w-4 h-4" />
           </Link>
         )}

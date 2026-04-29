@@ -6,9 +6,11 @@ import { useState } from 'react';
 import { Dumbbell, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { signIn, signInWithGoogle } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function LoginPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,7 +28,7 @@ export default function LoginPage() {
       router.push('/profile');
       router.refresh();
     } catch (err: any) {
-      setError(err.message || 'Failed to sign in');
+      setError(err.message || t.auth.errors.signInFailed);
     } finally {
       setLoading(false);
     }
@@ -37,7 +39,7 @@ export default function LoginPage() {
     try {
       await signInWithGoogle();
     } catch (err: any) {
-      setError(err.message || 'Failed to sign in with Google');
+      setError(err.message || t.auth.errors.googleFailed);
       setGoogleLoading(false);
     }
   };
@@ -56,15 +58,15 @@ export default function LoginPage() {
               AXION
             </span>
           </Link>
-          <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
-          <p className="text-foreground/70">Sign in to continue your calisthenics journey</p>
+          <h1 className="text-3xl font-bold mb-2">{t.auth.welcomeBack}</h1>
+          <p className="text-foreground/70">{t.auth.signInDesc}</p>
         </div>
 
         <div className="p-8 bg-card border border-border rounded-2xl">
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm font-medium mb-2">
-                Email
+                {t.auth.emailLabel}
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/40" />
@@ -74,7 +76,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-lg focus:border-primary focus:outline-none transition-colors"
-                  placeholder="your@email.com"
+                  placeholder={t.auth.emailPlaceholder}
                   required
                 />
               </div>
@@ -82,7 +84,7 @@ export default function LoginPage() {
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium mb-2">
-                Password
+                {t.auth.passwordLabel}
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/40" />
@@ -92,7 +94,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-10 pr-12 py-3 bg-background border border-border rounded-lg focus:border-primary focus:outline-none transition-colors"
-                  placeholder="••••••••"
+                  placeholder={t.auth.passwordPlaceholder}
                   required
                 />
                 <button
@@ -116,7 +118,7 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full py-3 bg-primary hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all font-medium"
             >
-              {loading ? 'Signing in...' : 'Sign In'}
+              {loading ? t.auth.signingIn : t.auth.signInButton}
             </button>
           </form>
 
@@ -126,7 +128,7 @@ export default function LoginPage() {
                 <div className="w-full border-t border-border"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-card text-foreground/60">Or continue with</span>
+                <span className="px-2 bg-card text-foreground/60">{t.auth.orContinueWith}</span>
               </div>
             </div>
 
@@ -142,15 +144,15 @@ export default function LoginPage() {
                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
               </svg>
-              {googleLoading ? 'Connecting...' : 'Google'}
+              {googleLoading ? t.auth.googleConnecting : t.auth.googleButton}
             </button>
           </div>
 
           <div className="mt-6 text-center">
             <p className="text-foreground/70">
-              Don't have an account?{' '}
+              {t.auth.noAccount}{' '}
               <Link href="/register" className="text-primary hover:underline font-medium">
-                Sign up
+                {t.auth.signUpLink}
               </Link>
             </p>
           </div>

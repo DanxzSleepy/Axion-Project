@@ -2,9 +2,11 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { MessageSquare, Bug, Lightbulb, Heart, Send, CheckCircle } from 'lucide-react';
+import { MessageSquare, Bug, Lightbulb, Heart, Send, CheckCircle, Users } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function FeedbackPage() {
+  const { t } = useLanguage();
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     type: 'general',
@@ -27,9 +29,9 @@ export default function FeedbackPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <h1 className="text-5xl font-bold mb-4">Feedback & Support</h1>
+        <h1 className="text-5xl font-bold mb-4">{t.feedback.title}</h1>
         <p className="text-xl text-foreground/70 mb-12">
-          Help us improve AXION! Share your feedback, report bugs, or suggest features.
+          {t.feedback.subtitle}
         </p>
 
         {submitted && (
@@ -40,8 +42,8 @@ export default function FeedbackPage() {
           >
             <CheckCircle className="w-6 h-6 text-success" />
             <div>
-              <p className="font-medium text-success">Thank you!</p>
-              <p className="text-sm text-foreground/70">Your feedback has been submitted successfully.</p>
+              <p className="font-medium text-success">{t.common.success}!</p>
+              <p className="text-sm text-foreground/70">{t.feedback.success}</p>
             </div>
           </motion.div>
         )}
@@ -53,16 +55,16 @@ export default function FeedbackPage() {
           transition={{ delay: 0.1 }}
           className="p-8 bg-card border border-border rounded-xl mb-12"
         >
-          <h2 className="text-2xl font-bold mb-6">Send Us Feedback</h2>
+          <h2 className="text-2xl font-bold mb-6">{t.feedback.submitButton}</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium mb-2">Feedback Type</label>
+              <label className="block text-sm font-medium mb-2">{t.feedback.typeLabel}</label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {[
-                  { value: 'general', label: 'General', icon: <MessageSquare className="w-4 h-4" /> },
-                  { value: 'bug', label: 'Bug Report', icon: <Bug className="w-4 h-4" /> },
-                  { value: 'feature', label: 'Feature Request', icon: <Lightbulb className="w-4 h-4" /> },
-                  { value: 'donate', label: 'Support Us', icon: <Heart className="w-4 h-4" /> }
+                  { value: 'general', label: t.feedback.typeGeneral, icon: <MessageSquare className="w-4 h-4" /> },
+                  { value: 'bug', label: t.feedback.typeBug, icon: <Bug className="w-4 h-4" /> },
+                  { value: 'feature', label: t.feedback.typeFeature, icon: <Lightbulb className="w-4 h-4" /> },
+                  { value: 'content', label: t.feedback.typeContent, icon: <Users className="w-4 h-4" /> }
                 ].map((type) => (
                   <button
                     key={type.value}
@@ -75,7 +77,7 @@ export default function FeedbackPage() {
                     }`}
                   >
                     {type.icon}
-                    <span className="text-sm">{type.label}</span>
+                    <span className="text-xs text-center font-medium leading-tight">{type.label}</span>
                   </button>
                 ))}
               </div>
@@ -83,7 +85,7 @@ export default function FeedbackPage() {
 
             <div>
               <label htmlFor="message" className="block text-sm font-medium mb-2">
-                Your Message *
+                {t.feedback.messageLabel} *
               </label>
               <textarea
                 id="message"
@@ -94,17 +96,17 @@ export default function FeedbackPage() {
                 className="w-full p-4 bg-background border border-border rounded-lg focus:border-primary focus:outline-none resize-none"
                 placeholder={
                   formData.type === 'bug'
-                    ? 'Describe the bug you encountered...'
+                    ? t.feedback.placeholderBug
                     : formData.type === 'feature'
-                    ? 'What feature would you like to see?'
-                    : 'Share your thoughts, suggestions, or questions...'
+                    ? t.feedback.placeholderFeature
+                    : t.feedback.placeholderGeneral
                 }
               />
             </div>
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium mb-2">
-                Email (optional - for follow-up)
+                {t.auth.emailLabel} ({t.common.optional})
               </label>
               <input
                 type="email"
@@ -112,7 +114,7 @@ export default function FeedbackPage() {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="w-full p-3 bg-background border border-border rounded-lg focus:border-primary focus:outline-none"
-                placeholder="your@email.com"
+                placeholder={t.auth.emailPlaceholder}
               />
             </div>
 
@@ -121,7 +123,7 @@ export default function FeedbackPage() {
               className="w-full px-6 py-3 bg-primary hover:bg-primary-hover text-white rounded-lg transition-all font-medium flex items-center justify-center gap-2"
             >
               <Send className="w-4 h-4" />
-              Submit Feedback
+              {t.feedback.submitButton}
             </button>
           </form>
         </motion.div>
@@ -132,14 +134,14 @@ export default function FeedbackPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <h2 className="text-2xl font-bold mb-6">Other Ways to Reach Us</h2>
+          <h2 className="text-2xl font-bold mb-6">{t.feedback.otherWays}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="p-6 bg-card border border-border rounded-xl">
-              <h3 className="text-lg font-bold mb-2">Social Media</h3>
+              <h3 className="text-lg font-bold mb-2">{t.feedback.socialMedia}</h3>
               <p className="text-foreground/70 text-sm mb-4">
-                Follow us and send direct messages on any platform
+                {t.feedback.socialMediaDesc}
               </p>
-              <div className="space-y-2 text-sm">
+              <div className="space-y-2 text-sm text-foreground/60">
                 <p>📷 Instagram: @axion_calisthenics</p>
                 <p>🐦 Twitter: @axion_fit</p>
                 <p>💬 Discord: discord.gg/axion</p>
@@ -147,11 +149,11 @@ export default function FeedbackPage() {
             </div>
 
             <div className="p-6 bg-card border border-border rounded-xl">
-              <h3 className="text-lg font-bold mb-2">Community</h3>
+              <h3 className="text-lg font-bold mb-2">{t.common.community}</h3>
               <p className="text-foreground/70 text-sm mb-4">
-                Join our community discussions
+                {t.community.subtitle}
               </p>
-              <div className="space-y-2 text-sm">
+              <div className="space-y-2 text-sm text-foreground/60">
                 <p>💪 Reddit: r/axion_calisthenics</p>
                 <p>📺 YouTube: AXION Calisthenics</p>
                 <p>💻 GitHub: github.com/axion-project</p>
@@ -167,26 +169,9 @@ export default function FeedbackPage() {
           transition={{ delay: 0.3 }}
           className="mt-12"
         >
-          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+          <h2 className="text-2xl font-bold mb-6">{t.feedback.faqTitle}</h2>
           <div className="space-y-4">
-            {[
-              {
-                q: 'How quickly will I receive a response?',
-                a: 'We aim to respond to all feedback within 48 hours. Bug reports are prioritized and may be addressed sooner.'
-              },
-              {
-                q: 'Can I contribute to the project?',
-                a: 'Yes! AXION is open to community contributions. Check our GitHub repository for contribution guidelines.'
-              },
-              {
-                q: 'How can I report a security vulnerability?',
-                a: 'Please email us directly with details. We take security seriously and will address issues promptly.'
-              },
-              {
-                q: 'Will AXION always be free?',
-                a: 'The core features will always remain free. We may offer premium features in the future, but the essential training tools will stay accessible to everyone.'
-              }
-            ].map((faq, index) => (
+            {t.feedback.faq.map((faq, index) => (
               <div key={index} className="p-6 bg-card border border-border rounded-xl">
                 <h3 className="font-bold mb-2">{faq.q}</h3>
                 <p className="text-foreground/70 text-sm">{faq.a}</p>
