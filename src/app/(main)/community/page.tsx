@@ -61,7 +61,12 @@ export default function CommunityPage() {
       setLeaderboard(leaderboardData);
       toast.success(t.common.success);
     } catch (error: any) {
-      console.error('Error joining community:', error);
+      console.error('Full Error joining community:', {
+        message: error.message,
+        details: error.details,
+        code: error.code,
+        hint: error.hint
+      });
       toast.error(error.message || 'Failed to join community');
     } finally {
       setJoining(false);

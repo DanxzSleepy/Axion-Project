@@ -22,7 +22,7 @@ export default function UserManagement() {
   const [loading, setLoading] = useState(true);
   const [authorized, setAuthorized] = useState(false);
   const [users, setUsers] = useState<any[]>([]);
-  const [searchTerm, setSearch) = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -121,7 +121,7 @@ export default function UserManagement() {
               type="text"
               placeholder="Search users..."
               value={searchTerm}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 bg-background border border-border rounded-lg focus:border-primary focus:outline-none transition-colors"
             />
           </div>
