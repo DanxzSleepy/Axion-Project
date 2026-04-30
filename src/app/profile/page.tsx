@@ -85,13 +85,18 @@ export default function EnhancedProfilePage() {
       setEditMode(false);
       toast.success(t.common.success);
     } catch (error: any) {
-      console.error('Full Error updating profile:', {
-        message: error.message,
-        details: error.details,
-        code: error.code,
-        hint: error.hint
-      });
-      toast.error(error.message || t.profile.profileUpdateError);
+      // Log ultra detalhado para debug
+      const errorMsg = error.message || 'Unknown error';
+      const errorCode = error.code || 'No code';
+      const errorDetails = error.details || 'No details';
+      
+      console.error('--- PROFILE UPDATE FAIL ---');
+      console.error('Message:', errorMsg);
+      console.error('Code:', errorCode);
+      console.error('Details:', errorDetails);
+      console.error('Full Object:', JSON.stringify(error));
+      
+      toast.error(`${errorMsg} (Code: ${errorCode})`);
     } finally {
       setSaving(false);
     }
